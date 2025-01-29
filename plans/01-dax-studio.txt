@@ -1,0 +1,21 @@
+Order: RelLogOp DependOnCols()() 0-3 RequiredCols(0, 1, 2, 3)('DimProduct'[Class], 'DimProduct'[Color], ''[Total Reseller Sales], ''[Total Reseller Orders])
+	GroupSemiJoin: RelLogOp DependOnCols()() 0-3 RequiredCols(0, 1, 2, 3)('DimProduct'[Class], 'DimProduct'[Color], ''[Total Reseller Sales], ''[Total Reseller Orders])
+		GroupSemiJoinFilterCluster: RelLogOp DependOnCols()() 0-1 RequiredCols(0, 1)('DimProduct'[Color], 'DimProduct'[Class])
+			Filter: RelLogOp DependOnCols()() 0-0 RequiredCols(0)('DimProduct'[Color])
+				Scan_Vertipaq: RelLogOp DependOnCols()() 0-0 RequiredCols(0)('DimProduct'[Color])
+				GreaterThanOrEqualTo: ScaLogOp DependOnCols(0)('DimProduct'[Color]) Boolean DominantValue=NONE
+					SEARCH: ScaLogOp DependOnCols(0)('DimProduct'[Color]) Integer DominantValue=NONE
+						Constant: ScaLogOp DependOnCols()() String DominantValue=e
+						'DimProduct'[Color]: ScaLogOp DependOnCols(0)('DimProduct'[Color]) String DominantValue=NONE
+						Constant: ScaLogOp DependOnCols()() Integer DominantValue=1
+						Constant: ScaLogOp DependOnCols()() Integer DominantValue=0
+					Constant: ScaLogOp DependOnCols()() Integer DominantValue=1
+			Scan_Vertipaq: RelLogOp DependOnCols(0)('DimProduct'[Color]) 1-1 RequiredCols(0, 1)('DimProduct'[Color], 'DimProduct'[Class])
+		Sum_Vertipaq: ScaLogOp MeasureRef=[Total Reseller Sales] DependOnCols(0, 1)('DimProduct'[Color], 'DimProduct'[Class]) Currency DominantValue=BLANK
+			Scan_Vertipaq: RelLogOp DependOnCols(0, 1)('DimProduct'[Color], 'DimProduct'[Class]) 2-285 RequiredCols(0, 1, 22)('DimProduct'[Color], 'DimProduct'[Class], 'FactResellerSales'[SalesAmount])
+			'FactResellerSales'[SalesAmount]: ScaLogOp DependOnCols(22)('FactResellerSales'[SalesAmount]) Currency DominantValue=NONE
+		Sum_Vertipaq: ScaLogOp MeasureRef=[Total Reseller Orders] DependOnCols(0, 1)('DimProduct'[Color], 'DimProduct'[Class]) Integer DominantValue=BLANK
+			Scan_Vertipaq: RelLogOp DependOnCols(0, 1)('DimProduct'[Color], 'DimProduct'[Class]) 2-285 RequiredCols(0, 1, 15)('DimProduct'[Color], 'DimProduct'[Class], 'FactResellerSales'[OrderQuantity])
+			'FactResellerSales'[OrderQuantity]: ScaLogOp DependOnCols(15)('FactResellerSales'[OrderQuantity]) Integer DominantValue=NONE
+	ColPosition<'DimProduct'[Class]>: ScaLogOp DependOnCols(0)('DimProduct'[Class]) String DominantValue=NONE
+	ColPosition<'DimProduct'[Color]>: ScaLogOp DependOnCols(1)('DimProduct'[Color]) String DominantValue=NONE

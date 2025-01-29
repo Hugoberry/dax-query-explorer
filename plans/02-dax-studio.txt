@@ -1,0 +1,16 @@
+GroupSemijoin: IterPhyOp LogOp=GroupSemiJoin IterCols(0, 1)('Product'[Brand], ''[Discount if greater than 3])
+	Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Sum_Vertipaq IterCols(0)('Product'[Brand]) #Records=11 #KeyCols=75 #ValueCols=1
+		ProjectionSpool<ProjectFusion<Copy>>: SpoolPhyOp #Records=11
+			Cache: IterPhyOp #FieldCols=1 #ValueCols=1
+				If: LookupPhyOp LogOp=If LookupCols(40, 42)('Sales'[Quantity], 'Sales'[Net Price]) Double
+					GreaterThanOrEqualTo: LookupPhyOp LogOp=GreaterThanOrEqualTo LookupCols(40)('Sales'[Quantity]) Boolean
+						ColValue<'Sales'[Quantity]>: LookupPhyOp LogOp=ColValue<'Sales'[Quantity]>'Sales'[Quantity] LookupCols(40)('Sales'[Quantity]) Integer
+						Constant: LookupPhyOp LogOp=Constant Integer 3
+					Multiply: LookupPhyOp LogOp=Multiply LookupCols(40, 42)('Sales'[Quantity], 'Sales'[Net Price]) Double
+						ColValue<'Sales'[Quantity]>: LookupPhyOp LogOp=ColValue<'Sales'[Quantity]>'Sales'[Quantity] LookupCols(40)('Sales'[Quantity]) Integer
+						ColValue<'Sales'[Net Price]>: LookupPhyOp LogOp=ColValue<'Sales'[Net Price]>'Sales'[Net Price] LookupCols(42)('Sales'[Net Price]) Double
+					Multiply: LookupPhyOp LogOp=Multiply LookupCols(40, 42)('Sales'[Quantity], 'Sales'[Net Price]) Double
+						Multiply: LookupPhyOp LogOp=Multiply LookupCols(40, 42)('Sales'[Quantity], 'Sales'[Net Price]) Double
+							 ColValue<'Sales'[Quantity]>: LookupPhyOp LogOp=ColValue<'Sales'[Quantity]>'Sales'[Quantity] LookupCols(40)('Sales'[Quantity]) Integer
+							 ColValue<'Sales'[Net Price]>: LookupPhyOp LogOp=ColValue<'Sales'[Net Price]>'Sales'[Net Price] LookupCols(42)('Sales'[Net Price]) Double
+						Constant: LookupPhyOp LogOp=Constant Double 0.8
