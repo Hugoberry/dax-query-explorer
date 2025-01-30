@@ -1,0 +1,11 @@
+AddColumns: RelLogOp 
+	Scan_Vertipaq: RelLogOp
+	Calculate: ScaLogOp 
+		Sum_Vertipaq: ScaLogOp 
+			Scan_Vertipaq: RelLogOp 
+			'Fact Sale'[Quantity]: ScaLogOp 
+		Filter: RelLogOp DependOnCols(0)
+			Scan_Vertipaq: RelLogOp 
+			LessThanOrEqualTo: ScaLogOp 
+				'Dimension Date'[Date]: ScaLogOp 
+				'Dimension Date'[Date]: ScaLogOp

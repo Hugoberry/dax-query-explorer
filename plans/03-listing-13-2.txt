@@ -1,0 +1,2 @@
+AddColumns: RelLogOp DependOnCols()() 0-0 RequiredCols(0)(''[My Column Name])
+	Constant: ScaLogOp DependOnCols()() Integer DominantValue=2

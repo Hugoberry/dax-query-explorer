@@ -1,0 +1,4 @@
+AddColumns: RelLogOp
+	Sum_Vertipaq: ScaLogOp
+		Scan_Vertipaq: RelLogOp 'Fact Sale'[Quantity]
+		'Fact Sale'[Quantity]: ScaLogOp

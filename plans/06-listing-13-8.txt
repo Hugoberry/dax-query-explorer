@@ -1,0 +1,7 @@
+AddColumns: IterPhyOp (0,1)([Date],[Quantity Per Day])
+	Spool_Iterator: IterPhyOp LogOp=Scan_Vertipaq [Date]
+		ProjectionSpool: SpoolPhyOp #Records=1461
+			Cache: IterPhyOp 
+	SpoolLookup: LookupPhyOp LogOp=Sum_Vertipaq 
+		ProjectionSpool: SpoolPhyOp #Records=1
+			Cache: IterPhyOp 

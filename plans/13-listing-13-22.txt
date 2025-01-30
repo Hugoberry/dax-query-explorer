@@ -1,0 +1,9 @@
+AddColumns: RelLogOp
+	Scan_Vertipaq: RelLogOp
+	SumX: ScaLogOp DependOnCols(0)
+		Filter: RelLogOp DependOnCols(0)
+			Scan_Vertipaq: RelLogOp
+			LessThanOrEqualTo: ScaLogOp 
+				'Fact Sale'[Invoice Date Key]: ScaLogOp
+				'Dimension Date'[Date]: ScaLogOp
+		'Fact Sale'[Quantity]: ScaLogOp

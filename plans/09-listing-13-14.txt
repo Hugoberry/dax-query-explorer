@@ -1,0 +1,14 @@
+AddColumns: RelLogOp
+	Scan_Vertipaq: RelLogOp [Calendar Year])
+	If: ScaLogOp 'Dimension Date'[Calendar Year]
+		'Dimension Date'[Calendar Year] = 2015: ScaLogOp 
+		PredicateCheck: RelLogOp
+			ScalarVarProxy: ScaLogOp
+		PredicateCheck: RelLogOp
+			ScalarVarProxy: ScaLogOp
+		Sum_Vertipaq: ScaLogOp MeasureRef=[Sum Quantity]
+			Scan_Vertipaq: RelLogOp 
+			'Fact Sale'[Quantity]: ScaLogOp 
+		Sum_Vertipaq: ScaLogOp MeasureRef=[Sum Profit]
+			Scan_Vertipaq: RelLogOp
+			'Fact Sale'[Profit]: ScaLogOp

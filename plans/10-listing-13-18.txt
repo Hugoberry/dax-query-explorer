@@ -1,0 +1,5 @@
+AddColumns: RelLogOp 
+	Scan_Vertipaq: RelLogOp 
+	Sum_Vertipaq: ScaLogOp DependOnCols()()
+		Scan_Vertipaq: RelLogOp DependOnCols()() 1-110 RequiredCols(13)('Fact Sale'[Quantity])
+		'Fact Sale'[Quantity]: ScaLogOp

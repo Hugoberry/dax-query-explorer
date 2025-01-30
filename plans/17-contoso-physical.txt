@@ -1,0 +1,6 @@
+AddColumns: IterPhyOp LogOp=SelectColumns IterCols(0, 1)(''[Color], ''[])
+    Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(0)('Product'[Color]) #Records=16 #KeyCols=107 #ValueCols=0
+        ProjectionSpool<ProjectFusion<>>: SpoolPhyOp #Records=16
+            Cache: IterPhyOp #FieldCols=1 #ValueCols=0
+    UPPER: LookupPhyOp LogOp=UPPER LookupCols(0)('Product'[Color]) String
+        ColValue<'Product'[Color]>: LookupPhyOp LogOp=ColValue<'Product'[Color]>'Product'[Color] LookupCols(0)('Product'[Color]) String

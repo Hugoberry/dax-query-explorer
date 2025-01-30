@@ -1,0 +1,7 @@
+varTest: Constant: ScaLogOp VarName=varTest 
+AddColumns: RelLogOp 
+	Scan_Vertipaq: RelLogOp [Calendar Year]
+	Integer->Double: ScaLogOp DependOnCols [Calendar Year]
+		Sum_Vertipaq: ScaLogOp MeasureRef=[Sum Quantity] 
+			Scan_Vertipaq: RelLogOp
+			'Fact Sale'[Quantity]: ScaLogOp [Quantity]

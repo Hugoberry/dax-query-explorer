@@ -1,0 +1,4 @@
+SelectColumns: RelLogOp DependOnCols()() 0-1 RequiredCols(0, 1)(''[Color], ''[])
+    Scan_Vertipaq: RelLogOp DependOnCols()() 0-0 RequiredCols(0)('Product'[Color])
+    UPPER: ScaLogOp DependOnCols(0)('Product'[Color]) String DominantValue=NONE
+        'Product'[Color]: ScaLogOp DependOnCols(0)('Product'[Color]) String DominantValue=NONE
