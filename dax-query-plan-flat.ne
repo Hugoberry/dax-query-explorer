@@ -8,10 +8,10 @@ const lexer = moo.compile({
     float:      /\d*\.\d+/,
     integer:    /\d+/,
     hashAttr:   /#(?:Records|KeyCols|ValueCols|FieldCols)/,
-    dataType:   /Boolean|Currency|Integer|Double|String/,
+    dataType:   /Boolean|Currency|Integer|Double|String|DateTime/,
     string:     /'(?:\\['\\]|[^\n'\\])*'/,
     bracketVal: /\[[^\]]*\]/,
-    identifier: /[a-zA-Z_][a-zA-Z0-9_]*/,
+    identifier: /[a-zA-Z_][a-zA-Z0-9_-]*/,
     comma:      /,/,
     lparen:     /\(/,
     rparen:     /\)/,
@@ -77,20 +77,30 @@ attribute -> dependOnCols
     | indexRange
     | columnRef
     | numeric
+    | varName
+    | refVarName
 
 value -> complexIdentifier 
     | columnRef 
     | identifier 
     | integer
     | float
-    | text {% function(d) {
+    | text
+    | "BLANK" {% function(d) {
     if (d[0].type === 'complexIdentifier') return d[0];
     if (d[0].table && d[0].column) return d[0];
+    if (d[0] === "BLANK") return "BLANK";
     return d[0].value;
 } %}
 
 numeric -> (%integer | %float) {% function(d) { 
     return { type: "NumericLiteral", value: parseFloat(d[0][0].value) }; 
+} %}
+
+varName -> "VarName" equals identifier
+
+refVarName -> "RefVarName" equals identifier {% function(d) {
+    return { type: "RefVarName", value: d[2].value };
 } %}
 
 dependOnCols -> "DependOnCols" lparen indices rparen lparen columnRefs rparen {% function(d) { 
@@ -131,7 +141,7 @@ measureRef -> "MeasureRef" equals bracketVal {% function(d) {
 } %}
 
 dominantVal -> "DominantValue" equals (identifier | integer | text) {% function(d) { 
-    return { type: "DominantValue", value: d[2].value }; 
+    return { type: "DominantValue", value: d[2].value || d[2] }; 
 } %}
 
 logOp -> "LogOp" equals value {% function(d) { 
