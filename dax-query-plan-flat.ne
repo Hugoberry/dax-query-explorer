@@ -75,7 +75,6 @@ attribute -> dependOnCols
     | lookupCols
     | iterCols
     | indexRange
-    | fieldCols
     | columnRef
     | numeric
 
@@ -145,10 +144,6 @@ hashAttr -> %hashAttr equals integer {% function(d) {
 
 indexRange -> integer hyphen integer {% function(d) { 
     return { type: "IndexRange", start: d[0].value, end: d[2].value }; 
-} %}
-
-fieldCols -> "#FieldCols" equals integer {% function(d) { 
-    return { type: "FieldCols", value: parseInt(d[2].value) }; 
 } %}
 
 integer -> %integer {% id %}
