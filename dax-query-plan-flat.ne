@@ -5,8 +5,9 @@ const lexer = moo.compile({
     opType:     /RelLogOp|ScaLogOp|IterPhyOp|LookupPhyOp|SpoolPhyOp/,
     colon:      /:/,
     lineRange:  /\d+-\d+/,
+    float:      /\d*\.\d+/,
     integer:    /\d+/,
-    hashAttr:   /#(?:Records|KeyCols|ValueCols)/,
+    hashAttr:   /#(?:Records|KeyCols|ValueCols|FieldCols)/,
     dataType:   /Boolean|Currency|Integer|Double|String/,
     string:     /'(?:\\['\\]|[^\n'\\])*'/,
     bracketVal: /\[[^\]]*\]/,
@@ -18,11 +19,9 @@ const lexer = moo.compile({
     hyphen:     /-/,
     langle:     /</,
     rangle:     />/,
-    langle:     /</,
-    rangle:     />/,
     lbracket:   /\[/,
     rbracket:   /\]/,
-    text:       /[^\s\(\)=\[\],]+/,
+    text:       /[^\s\(\)=\[\],<>]+/,
     nl:         { match: /\n/, lineBreaks: true },
 });
 %}
@@ -34,24 +33,34 @@ line -> indent operator _ %opType _ attributes nl {% function(d) { return { inde
 
 indent -> %ws:* {% function(d) { return d[0] ? d[0].map(w => w.value).join('') : ''; } %}
 
-operator -> (text | identifier | columnRef | angleExpr) colon {% function(d) { 
+operator -> (complexIdentifier | text | identifier | columnRef) colon {% function(d) { 
     const op = d[0][0];
     if (op.table && op.column) {
         return { type: 'columnRef', table: op.table, column: op.column };
     }
-    if (op.type === 'angleExpr') {
+    if (op.type === 'complexIdentifier') {
         return op;
     }
     return op.value; 
 } %}
 
-angleExpr -> identifier %langle columnRef %rangle {% function(d) {
+complexIdentifier -> identifier %langle typeParam %rangle {% function(d) {
     return { 
-        type: 'angleExpr',
+        type: 'complexIdentifier',
         name: d[0].value,
-        columnRef: d[2]
+        param: d[2]
     };
 } %}
+
+typeParam -> identifier %langle typeParam %rangle {% function(d) {
+    return {
+        type: 'complexIdentifier',
+        name: d[0].value,
+        param: d[2]
+    };
+} %}
+    | columnRef {% function(d) { return d[0]; } %}
+    | identifier {% function(d) { return d[0].value; } %}
 
 attributes -> attribute (_ attribute):* {% function(d) { return [d[0], ...d[1].map(r => r[1])]; } %}
 
@@ -68,6 +77,22 @@ attribute -> dependOnCols
     | indexRange
     | fieldCols
     | columnRef
+    | numeric
+
+value -> complexIdentifier 
+    | columnRef 
+    | identifier 
+    | integer
+    | float
+    | text {% function(d) {
+    if (d[0].type === 'complexIdentifier') return d[0];
+    if (d[0].table && d[0].column) return d[0];
+    return d[0].value;
+} %}
+
+numeric -> (%integer | %float) {% function(d) { 
+    return { type: "NumericLiteral", value: parseFloat(d[0][0].value) }; 
+} %}
 
 dependOnCols -> "DependOnCols" lparen indices rparen lparen columnRefs rparen {% function(d) { 
     return { type: "DependOnCols", indices: d[2], refs: d[5] }; 
@@ -110,8 +135,8 @@ dominantVal -> "DominantValue" equals (identifier | integer | text) {% function(
     return { type: "DominantValue", value: d[2].value }; 
 } %}
 
-logOp -> "LogOp" equals identifier {% function(d) { 
-    return { type: "LogOp", value: d[2].value }; 
+logOp -> "LogOp" equals value {% function(d) { 
+    return { type: "LogOp", value: d[2] }; 
 } %}
 
 hashAttr -> %hashAttr equals integer {% function(d) { 
@@ -127,6 +152,7 @@ fieldCols -> "#FieldCols" equals integer {% function(d) {
 } %}
 
 integer -> %integer {% id %}
+float -> %float {% id %}
 text -> %text {% id %}
 dataType -> %dataType {% id %}
 string -> %string {% id %}
