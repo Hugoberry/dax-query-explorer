@@ -59,6 +59,14 @@ typeParam -> identifier %langle typeParam %rangle {% function(d) {
         param: d[2]
     };
 } %}
+    | identifier %langle %rangle {% function(d) {
+        return {
+            type: 'complexIdentifier',
+            name: d[0].value,
+            param: null
+        };
+    } %}
+    | %langle %rangle {% function(d) { return null; } %}
     | columnRef {% function(d) { return d[0]; } %}
     | identifier {% function(d) { return d[0].value; } %}
 
