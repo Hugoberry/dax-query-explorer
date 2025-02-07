@@ -1,5 +1,7 @@
+@preprocessor esmodule
+
 @{%
-const moo = require("moo");
+import moo from 'moo';
 const lexer = moo.compile({
     ws:         /[ \t]+/,
     opType:     /RelLogOp|ScaLogOp|IterPhyOp|LookupPhyOp|SpoolPhyOp/,
