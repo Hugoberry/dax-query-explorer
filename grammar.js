@@ -32,7 +32,7 @@ let ParserRules = [
     {"name": "main$ebnf$1", "symbols": ["line"]},
     {"name": "main$ebnf$1", "symbols": ["main$ebnf$1", "line"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "main", "symbols": ["_", "main$ebnf$1", "_"], "postprocess": function(d) { return d[1]; }},
-    {"name": "line", "symbols": ["indent", "operator", "_", (lexer.has("opType") ? {type: "opType"} : opType), "_", "attributes", "nl"], "postprocess": function(d) { return { indent: d[0].length, operator: d[1], type: d[3], attributes: d[5] }; }},
+    {"name": "line", "symbols": ["indent", "operator", "_", (lexer.has("opType") ? {type: "opType"} : opType), "_", "attributes", "nl"], "postprocess": function(d,l) { return { indent: d[0].length,line:d[3].line, operator: d[1], type: d[3].value, attributes: d[5] }; }},
     {"name": "indent$ebnf$1", "symbols": []},
     {"name": "indent$ebnf$1", "symbols": ["indent$ebnf$1", (lexer.has("ws") ? {type: "ws"} : ws)], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "indent", "symbols": ["indent$ebnf$1"], "postprocess": function(d) { return d[0] ? d[0].map(w => w.value).join('') : ''; }},
@@ -77,7 +77,13 @@ let ParserRules = [
     {"name": "attributes$ebnf$1", "symbols": []},
     {"name": "attributes$ebnf$1$subexpression$1", "symbols": ["_", "attribute"]},
     {"name": "attributes$ebnf$1", "symbols": ["attributes$ebnf$1", "attributes$ebnf$1$subexpression$1"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
-    {"name": "attributes", "symbols": ["attribute", "attributes$ebnf$1"], "postprocess": function(d) { return [d[0], ...d[1].map(r => r[1])]; }},
+    {"name": "attributes", "symbols": ["attribute", "attributes$ebnf$1"], "postprocess":  function(d) { 
+            const attrs = [d[0], ...d[1].map(r => r[1])];
+            // Flatten any single-item arrays in the attributes
+            return attrs.map(attr => 
+                Array.isArray(attr) && attr.length === 1 ? attr[0] : attr
+            );
+        } },
     {"name": "attribute", "symbols": ["dependOnCols"]},
     {"name": "attribute", "symbols": ["requiredCols"]},
     {"name": "attribute", "symbols": ["lineRange"]},
@@ -133,7 +139,7 @@ let ParserRules = [
     {"name": "indices$ebnf$1", "symbols": ["indices$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "indices$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "indices", "symbols": ["indices$ebnf$1"], "postprocess":  function(d) { 
-            return d[0] ? [d[0][0], ...d[0][1].map(r => r[3])] : []; 
+            return d[0] ? [d[0][0].value, ...d[0][1].map(r => r[3].value)] : []; 
         } },
     {"name": "columnRefs$ebnf$1$subexpression$1$ebnf$1", "symbols": []},
     {"name": "columnRefs$ebnf$1$subexpression$1$ebnf$1$subexpression$1", "symbols": ["_", "comma", "_", "columnRef"]},
@@ -158,10 +164,10 @@ let ParserRules = [
     {"name": "dominantVal$subexpression$1", "symbols": ["integer"]},
     {"name": "dominantVal$subexpression$1", "symbols": ["text"]},
     {"name": "dominantVal", "symbols": [{"literal":"DominantValue"}, "equals", "dominantVal$subexpression$1"], "postprocess":  function(d) { 
-            return { type: "DominantValue", value: d[2].value || d[2] }; 
+            return { type: "DominantValue", value: d[2][0].value || d[2] }; 
         } },
     {"name": "logOp", "symbols": [{"literal":"LogOp"}, "equals", "value"], "postprocess":  function(d) { 
-            return { type: "LogOp", value: d[2] }; 
+            return { type: "LogOp", value: d[2][0].value }; 
         } },
     {"name": "hashAttr", "symbols": [(lexer.has("hashAttr") ? {type: "hashAttr"} : hashAttr), "equals", "integer"], "postprocess":  function(d) { 
             return { type: d[0].value.slice(1), value: parseInt(d[2].value) }; 
@@ -169,10 +175,12 @@ let ParserRules = [
     {"name": "indexRange", "symbols": ["integer", "hyphen", "integer"], "postprocess":  function(d) { 
             return { type: "IndexRange", start: d[0].value, end: d[2].value }; 
         } },
+    {"name": "dataType", "symbols": [(lexer.has("dataType") ? {type: "dataType"} : dataType)], "postprocess":  function(d){ 
+        	return { dataType: d[0].value };
+        } },
     {"name": "integer", "symbols": [(lexer.has("integer") ? {type: "integer"} : integer)], "postprocess": id},
     {"name": "float", "symbols": [(lexer.has("float") ? {type: "float"} : float)], "postprocess": id},
     {"name": "text", "symbols": [(lexer.has("text") ? {type: "text"} : text)], "postprocess": id},
-    {"name": "dataType", "symbols": [(lexer.has("dataType") ? {type: "dataType"} : dataType)], "postprocess": id},
     {"name": "string", "symbols": [(lexer.has("string") ? {type: "string"} : string)], "postprocess": id},
     {"name": "bracketVal", "symbols": [(lexer.has("bracketVal") ? {type: "bracketVal"} : bracketVal)], "postprocess": id},
     {"name": "identifier", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": id},
