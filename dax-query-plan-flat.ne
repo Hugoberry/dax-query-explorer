@@ -31,7 +31,7 @@ const lexer = moo.compile({
 @lexer lexer
 
 main -> _ line:+ _ {% function(d) { return d[1]; } %}
-line -> indent operator _ %opType _ attributes nl {% function(d) { return { indent: d[0].length, operator: d[1], type: d[3], attributes: d[5] }; } %}
+line -> indent operator _ %opType _ attributes nl {% function(d,l) { return { indent: d[0].length,line:d[3].line, operator: d[1], type: d[3].value, attributes: d[5] }; } %}
 
 indent -> %ws:* {% function(d) { return d[0] ? d[0].map(w => w.value).join('') : ''; } %}
 
@@ -72,7 +72,13 @@ typeParam -> identifier %langle typeParam %rangle {% function(d) {
     | columnRef {% function(d) { return d[0]; } %}
     | identifier {% function(d) { return d[0].value; } %}
 
-attributes -> attribute (_ attribute):* {% function(d) { return [d[0], ...d[1].map(r => r[1])]; } %}
+attributes -> attribute (_ attribute):* {% function(d) { 
+    const attrs = [d[0], ...d[1].map(r => r[1])];
+    // Flatten any single-item arrays in the attributes
+    return attrs.map(attr => 
+        Array.isArray(attr) && attr.length === 1 ? attr[0] : attr
+    );
+} %}
 
 attribute -> dependOnCols
     | requiredCols
@@ -130,7 +136,7 @@ iterCols -> "IterCols" lparen indices rparen lparen columnRefs rparen {% functio
 } %}
 
 indices -> (integer (_ comma _ integer):*):? {% function(d) { 
-    return d[0] ? [d[0][0], ...d[0][1].map(r => r[3])] : []; 
+    return d[0] ? [d[0][0].value, ...d[0][1].map(r => r[3].value)] : []; 
 } %}
 
 columnRefs -> (columnRef (_ comma _ columnRef):*):? {% function(d) { 
@@ -151,11 +157,11 @@ measureRef -> "MeasureRef" equals bracketVal {% function(d) {
 } %}
 
 dominantVal -> "DominantValue" equals (identifier | integer | text) {% function(d) { 
-    return { type: "DominantValue", value: d[2].value || d[2] }; 
+    return { type: "DominantValue", value: d[2][0].value || d[2] }; 
 } %}
 
 logOp -> "LogOp" equals value {% function(d) { 
-    return { type: "LogOp", value: d[2] }; 
+    return { type: "LogOp", value: d[2][0].value }; 
 } %}
 
 hashAttr -> %hashAttr equals integer {% function(d) { 
@@ -166,10 +172,13 @@ indexRange -> integer hyphen integer {% function(d) {
     return { type: "IndexRange", start: d[0].value, end: d[2].value }; 
 } %}
 
+dataType -> %dataType {% function(d){ 
+	return { dataType: d[0].value };
+} %}
+
 integer -> %integer {% id %}
 float -> %float {% id %}
 text -> %text {% id %}
-dataType -> %dataType {% id %}
 string -> %string {% id %}
 bracketVal -> %bracketVal {% id %}
 identifier -> %identifier {% id %}
