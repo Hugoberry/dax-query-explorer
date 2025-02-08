@@ -39,8 +39,7 @@ interface StatusBarProps {
 interface TopMenuProps {
   onParse: () => void;
 }
-
-// Updated TopMenu component without unused editorRef
+// TopMenu component
 const TopMenu: React.FC<TopMenuProps> = ({ onParse }) => {
   return (
     <div id="topMenu">
