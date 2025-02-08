@@ -1,0 +1,16 @@
+<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect x="0" y="0" width="128" height="128" rx="16" fill="#2B2333"/>
+  
+  <!-- Left curly bracket -->
+  <path d="M40 25 C28 25 22 32 22 45 L22 55 C22 62 15 65 12 65 C15 65 22 68 22 75 L22 85 C22 98 28 105 40 105" 
+        stroke="#FF4B7D" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Right curly bracket -->
+  <path d="M88 25 C100 25 106 32 106 45 L106 55 C106 62 113 65 116 65 C113 65 106 68 106 75 L106 85 C106 98 100 105 88 105" 
+        stroke="#FF4B7D" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Navigation arrows -->
+  <path d="M45 64 L83 64 M70 52 L83 64 L70 76" 
+        stroke="#FF8FAA" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
