@@ -21,6 +21,7 @@
     "@radix-ui/react-toggle": "^1.1.2",
     "@radix-ui/react-toggle-group": "^1.1.2",
     "@uiw/react-codemirror": "^4.23.6",
+    "@vercel/analytics": "^1.4.1",
     "@xyflow/react": "^12.3.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
