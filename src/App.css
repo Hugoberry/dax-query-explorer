@@ -1,0 +1,111 @@
+:root {
+  --editor-status-bar-height: 22px;
+  --editor-top-menu-height: 22px;
+}
+
+#root {
+  width: 100vw;
+  margin: 0;
+  height: 100vh;
+  font-family: 'JetBrains Mono', Inter, system-ui, Avenir, Helvetica, Arial,
+    sans-serif;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url(/fonts/JetBrainsMono-Regular.woff2) format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+#editor {
+  height: calc(
+    100vh - var(--editor-status-bar-height) - var(--editor-top-menu-height)
+  );
+  font-family: 'JetBrains Mono', Inter, system-ui, Avenir, Helvetica, Arial,
+    sans-serif;
+}
+
+#statusBar,
+#topMenu {
+  height: var(--editor-status-bar-height);
+  /* padding: 0 8px; */
+  background-color: #007acc;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: smaller;
+}
+
+.status-item {
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.menu-item {
+  padding-right: 8px;
+  padding-left: 8px;
+  height: 100%;
+  display: inline-block;
+  align-items: center;
+  border-right-width: 1px;
+  border-style: groove;
+  cursor: pointer;
+}
+
+.menu-group {
+  height: 100%;
+}
+
+.menu-item:hover {
+  background-color: #00548b;
+  transition-duration: 0.25s;
+}
+
+.status-actions {
+  height: 100%;
+  width: auto;
+  display: inline-flex;
+}
+
+.status-actions .status-item {
+  transform: scale(0.8);
+  border: #1a1a1a;
+  border-width: 1px;
+}
+
+.status-actions .status-item :hover {
+  background-color: #00548b;
+  transition-duration: 0.25s;
+}
+
+.line-numbers {
+  font-family: 'JetBrains Mono';
+}
+
+.cm-theme {
+  height: 100%;
+}
+
+.react-flow__controls button {
+  border: 1px solid #007acc;
+  border-right: none;
+  border-radius: 0%;
+}
+
+.react-flow__controls button:hover {
+  background-color: rgb(105, 105, 105);
+}
+
+.react-flow__controls button:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+.react-flow__controls button:last-child {
+  border-right: 1px solid #007acc;
+  border-bottom: 1px solid #007acc;
+
+  border-radius: 0 5px 5px 0;
+}
