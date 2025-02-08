@@ -1,2 +1,2 @@
 export const FEEDBACK_URL =
-  'https://github.com/power-bi/dax-query-explorer/issues';
+  'https://github.com/Hugoberry/dax-query-explorer/issues';

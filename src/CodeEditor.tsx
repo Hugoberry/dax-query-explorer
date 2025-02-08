@@ -14,6 +14,7 @@ import CodeMirror, {
   oneDark,
   ReactCodeMirrorRef,
 } from '@uiw/react-codemirror';
+import {ViewUpdate} from '@codemirror/view';
 import { defaultKeymap } from '@codemirror/commands';
 import grammar from '@/lib/grammar';
 import nearley from 'nearley';
@@ -36,14 +37,11 @@ interface StatusBarProps {
 }
 
 interface TopMenuProps {
-  editorRef: React.MutableRefObject<ReactCodeMirrorRef | null>;
-  initialContent: string;
   onParse: () => void;
 }
 
-const TopMenu: React.FC<TopMenuProps> = (props: TopMenuProps) => {
-  const { editorRef, onParse } = props;
-
+// Updated TopMenu component without unused editorRef
+const TopMenu: React.FC<TopMenuProps> = ({ onParse }) => {
   return (
     <div id="topMenu">
       <div className="menu-group">
@@ -119,18 +117,27 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const editorRef = useRef<ReactCodeMirrorRef>(null);
   const [parser, setParser] = useState<nearley.Parser | null>(null);
 
+  // Update cursor position and selection
+  const handleCursorActivity = useCallback((viewUpdate: ViewUpdate) => {
+    const pos = viewUpdate.state.selection.main.head;
+    const line = viewUpdate.state.doc.lineAt(pos);
+    setPosition({
+      line: line.number,
+      column: pos - line.from + 1
+    });
+    
+    const selectionSize = Math.abs(
+      viewUpdate.state.selection.main.from - viewUpdate.state.selection.main.to
+    );
+    setSelection(selectionSize);
+  }, []);
+
   useEffect(() => {
     try {
-      // Get the grammar from the imported module
-      const grammarModule = grammar.default || grammar;
-
-      if (!grammarModule.Lexer || !grammarModule.ParserRules) {
-        throw new Error('Grammar missing required properties');
-      }
-
-      // Initialize parser using nearley and the imported grammar
+      // Handle the grammar import without accessing .default
+      // Create a new parser from the grammar
       const newParser = new nearley.Parser(
-        nearley.Grammar.fromCompiled(grammarModule)
+        nearley.Grammar.fromCompiled(grammar as nearley.CompiledRules)
       );
       setParser(newParser);
       console.log('Parser initialized successfully');
@@ -146,25 +153,20 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     }
 
     try {
-      // Create a new parser instance for each parse
-      const grammarModule = grammar.default || grammar;
+      // Handle the grammar import without accessing .default
+      // Create a new parser from the grammar
       const newParser = new nearley.Parser(
-        nearley.Grammar.fromCompiled(grammarModule)
+        nearley.Grammar.fromCompiled(grammar as nearley.CompiledRules)
       );
 
-      // Append newline to the content before parsing
       const contentWithNewline = currentContent + '\n';
       console.log('Parsing content:', contentWithNewline);
 
-      // Parse the input
       newParser.feed(contentWithNewline);
       const results = newParser.results[0];
       console.log('Parse results:', results);
 
-      // Pass results to parent component
       onParseResult?.(results);
-
-      // Call onChange if provided
       onChange?.(currentContent);
     } catch (err) {
       console.error('Parse error:', err);
@@ -177,11 +179,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 
   return (
     <div className="w-full" id="editor">
-      <TopMenu
-        editorRef={editorRef}
-        initialContent={initialContent}
-        onParse={handleParse}
-      />
+      <TopMenu onParse={handleParse} />
 
       <CodeMirror
         ref={editorRef}
@@ -189,6 +187,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         height="100%"
         theme={oneDark}
         onChange={handleChange}
+        onUpdate={handleCursorActivity}
         extensions={[
           keymap.of(defaultKeymap),
           lineNumbers(),
@@ -208,7 +207,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         setShowSplitView={setShowSplitView}
         position={position}
         selection={selection}
-      ></StatusBar>
+      />
     </div>
   );
 };

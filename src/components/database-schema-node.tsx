@@ -5,6 +5,12 @@ import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { BaseNode } from '@/components/base-node';
 import { LabeledHandle } from '@/components/labeled-handle';
 
+interface JsonField {
+  title: string;
+  value: string;
+  type: string;
+}
+
 type DatabaseSchemaNode = Node<{
   label: string;
   schema: JsonField[];
