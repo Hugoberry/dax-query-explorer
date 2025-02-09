@@ -1,0 +1,46 @@
+{
+  "FileFormatVersion": 3,
+  "PhysicalQueryPlanRows": [
+    {
+      "Records": 121,
+      "Operation": "Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(0)('Product'[List Price]) #Records=121 #KeyCols=189 #ValueCols=0",
+      "IndentedOperation": "Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(0)('Product'[List Price]) #Records=121 #KeyCols=189 #ValueCols=0",
+      "Level": 0,
+      "RowNumber": 1,
+      "NextSiblingRowNumber": 4,
+      "HighlightRow": false
+    },
+    {
+      "Records": 121,
+      "Operation": "ProjectionSpool<ProjectFusion<>>: SpoolPhyOp #Records=121",
+      "IndentedOperation": "    ProjectionSpool<ProjectFusion<>>: SpoolPhyOp #Records=121",
+      "Level": 1,
+      "RowNumber": 2,
+      "NextSiblingRowNumber": 4,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "Cache: IterPhyOp #FieldCols=1 #ValueCols=0",
+      "IndentedOperation": "        Cache: IterPhyOp #FieldCols=1 #ValueCols=0",
+      "Level": 2,
+      "RowNumber": 3,
+      "NextSiblingRowNumber": 4,
+      "HighlightRow": true
+    }
+  ],
+  "LogicalQueryPlanRows": [
+    {
+      "Operation": "Scan_Vertipaq: RelLogOp DependOnCols()() 0-0 RequiredCols(0)('Product'[List Price])",
+      "IndentedOperation": "Scan_Vertipaq: RelLogOp DependOnCols()() 0-0 RequiredCols(0)('Product'[List Price])",
+      "Level": 0,
+      "RowNumber": 1,
+      "NextSiblingRowNumber": 2,
+      "HighlightRow": false
+    }
+  ],
+  "ActivityID": "0D5AB633-90D7-4F1F-BD00-565A45EFE9EE",
+  "CommandText": "evaluate values(Product[List Price])",
+  "Parameters": null,
+  "StartDatetime": "2025-02-09T13:44:34.566667+00:00"
+}

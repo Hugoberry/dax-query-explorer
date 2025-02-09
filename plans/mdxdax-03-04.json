@@ -1,0 +1,237 @@
+{
+  "FileFormatVersion": 3,
+  "PhysicalQueryPlanRows": [
+    {
+      "Records": null,
+      "Operation": "AddColumns: IterPhyOp LogOp=AddColumns IterCols(1, 2, 3)('Date'[MonthNumberOfYear], 'Product'[ProductLine], ''[YTD])",
+      "IndentedOperation": "AddColumns: IterPhyOp LogOp=AddColumns IterCols(1, 2, 3)('Date'[MonthNumberOfYear], 'Product'[ProductLine], ''[YTD])",
+      "Level": 0,
+      "RowNumber": 1,
+      "NextSiblingRowNumber": 11,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "ApplyRemap: IterPhyOp LogOp=CrossJoin IterCols(1, 2)('Date'[MonthNumberOfYear], 'Product'[ProductLine])",
+      "IndentedOperation": "    ApplyRemap: IterPhyOp LogOp=CrossJoin IterCols(1, 2)('Date'[MonthNumberOfYear], 'Product'[ProductLine])",
+      "Level": 1,
+      "RowNumber": 2,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": false
+    },
+    {
+      "Records": 0,
+      "Operation": "CrossApply: IterPhyOp LogOp=CrossJoin IterCols(1, 2)('Date'[MonthNumberOfYear], 'Product'[ProductLine])",
+      "IndentedOperation": "        CrossApply: IterPhyOp LogOp=CrossJoin IterCols(1, 2)('Date'[MonthNumberOfYear], 'Product'[ProductLine])",
+      "Level": 2,
+      "RowNumber": 3,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": false
+    },
+    {
+      "Records": 0,
+      "Operation": "Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(1)('Date'[MonthNumberOfYear]) #Records=0 #KeyCols=189 #ValueCols=0",
+      "IndentedOperation": "            Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(1)('Date'[MonthNumberOfYear]) #Records=0 #KeyCols=189 #ValueCols=0",
+      "Level": 3,
+      "RowNumber": 4,
+      "NextSiblingRowNumber": 6,
+      "HighlightRow": false
+    },
+    {
+      "Records": 0,
+      "Operation": "ProjectionSpool<ProjectFusion<>>: SpoolPhyOp #Records=0",
+      "IndentedOperation": "                ProjectionSpool<ProjectFusion<>>: SpoolPhyOp #Records=0",
+      "Level": 4,
+      "RowNumber": 5,
+      "NextSiblingRowNumber": 5,
+      "HighlightRow": false
+    },
+    {
+      "Records": 5,
+      "Operation": "Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(2)('Product'[ProductLine]) #Records=5 #KeyCols=189 #ValueCols=0",
+      "IndentedOperation": "            Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(2)('Product'[ProductLine]) #Records=5 #KeyCols=189 #ValueCols=0",
+      "Level": 3,
+      "RowNumber": 6,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": false
+    },
+    {
+      "Records": 5,
+      "Operation": "ProjectionSpool<ProjectFusion<>>: SpoolPhyOp #Records=5",
+      "IndentedOperation": "                ProjectionSpool<ProjectFusion<>>: SpoolPhyOp #Records=5",
+      "Level": 4,
+      "RowNumber": 7,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "Cache: IterPhyOp #FieldCols=1 #ValueCols=0",
+      "IndentedOperation": "                    Cache: IterPhyOp #FieldCols=1 #ValueCols=0",
+      "Level": 5,
+      "RowNumber": 8,
+      "NextSiblingRowNumber": 8,
+      "HighlightRow": true
+    },
+    {
+      "Records": 0,
+      "Operation": "SpoolLookup: LookupPhyOp LogOp=Sum_Vertipaq LookupCols(1, 2)('Date'[MonthNumberOfYear], 'Product'[ProductLine]) Double #Records=0 #KeyCols=189 #ValueCols=1 DominantValue=BLANK",
+      "IndentedOperation": "    SpoolLookup: LookupPhyOp LogOp=Sum_Vertipaq LookupCols(1, 2)('Date'[MonthNumberOfYear], 'Product'[ProductLine]) Double #Records=0 #KeyCols=189 #ValueCols=1 DominantValue=BLANK",
+      "Level": 1,
+      "RowNumber": 9,
+      "NextSiblingRowNumber": 11,
+      "HighlightRow": false
+    },
+    {
+      "Records": 0,
+      "Operation": "ProjectionSpool<ProjectFusion<Copy>>: SpoolPhyOp #Records=0",
+      "IndentedOperation": "        ProjectionSpool<ProjectFusion<Copy>>: SpoolPhyOp #Records=0",
+      "Level": 2,
+      "RowNumber": 10,
+      "NextSiblingRowNumber": 11,
+      "HighlightRow": false
+    }
+  ],
+  "LogicalQueryPlanRows": [
+    {
+      "Operation": "CalculateTable: RelLogOp DependOnCols()() 1-3 RequiredCols(1, 2, 3)('Date'[MonthNumberOfYear], 'Product'[ProductLine], ''[YTD])",
+      "IndentedOperation": "CalculateTable: RelLogOp DependOnCols()() 1-3 RequiredCols(1, 2, 3)('Date'[MonthNumberOfYear], 'Product'[ProductLine], ''[YTD])",
+      "Level": 0,
+      "RowNumber": 1,
+      "NextSiblingRowNumber": 18,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "AddColumns: RelLogOp DependOnCols()() 1-3 RequiredCols(1, 2, 3)('Date'[MonthNumberOfYear], 'Product'[ProductLine], ''[YTD])",
+      "IndentedOperation": "    AddColumns: RelLogOp DependOnCols()() 1-3 RequiredCols(1, 2, 3)('Date'[MonthNumberOfYear], 'Product'[ProductLine], ''[YTD])",
+      "Level": 1,
+      "RowNumber": 2,
+      "NextSiblingRowNumber": 15,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "CrossJoin: RelLogOp DependOnCols()() 1-2 RequiredCols(1, 2)('Date'[MonthNumberOfYear], 'Product'[ProductLine])",
+      "IndentedOperation": "        CrossJoin: RelLogOp DependOnCols()() 1-2 RequiredCols(1, 2)('Date'[MonthNumberOfYear], 'Product'[ProductLine])",
+      "Level": 2,
+      "RowNumber": 3,
+      "NextSiblingRowNumber": 6,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Scan_Vertipaq: RelLogOp DependOnCols()() 1-1 RequiredCols(1)('Date'[MonthNumberOfYear])",
+      "IndentedOperation": "            Scan_Vertipaq: RelLogOp DependOnCols()() 1-1 RequiredCols(1)('Date'[MonthNumberOfYear])",
+      "Level": 3,
+      "RowNumber": 4,
+      "NextSiblingRowNumber": 4,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Scan_Vertipaq: RelLogOp DependOnCols()() 2-2 RequiredCols(2)('Product'[ProductLine])",
+      "IndentedOperation": "            Scan_Vertipaq: RelLogOp DependOnCols()() 2-2 RequiredCols(2)('Product'[ProductLine])",
+      "Level": 3,
+      "RowNumber": 5,
+      "NextSiblingRowNumber": 5,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Calculate: ScaLogOp DependOnCols(1, 2)('Date'[MonthNumberOfYear], 'Product'[ProductLine]) Double DominantValue=BLANK",
+      "IndentedOperation": "        Calculate: ScaLogOp DependOnCols(1, 2)('Date'[MonthNumberOfYear], 'Product'[ProductLine]) Double DominantValue=BLANK",
+      "Level": 2,
+      "RowNumber": 6,
+      "NextSiblingRowNumber": 15,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Sum_Vertipaq: ScaLogOp MeasureRef=[Total Sales Amount] DependOnCols(1, 2)('Date'[MonthNumberOfYear], 'Product'[ProductLine]) Double DominantValue=BLANK",
+      "IndentedOperation": "            Sum_Vertipaq: ScaLogOp MeasureRef=[Total Sales Amount] DependOnCols(1, 2)('Date'[MonthNumberOfYear], 'Product'[ProductLine]) Double DominantValue=BLANK",
+      "Level": 3,
+      "RowNumber": 7,
+      "NextSiblingRowNumber": 10,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Scan_Vertipaq: RelLogOp DependOnCols(1, 2)('Date'[MonthNumberOfYear], 'Product'[ProductLine]) 4-154 RequiredCols(1, 2, 23)('Date'[MonthNumberOfYear], 'Product'[ProductLine], 'Internet Sales'[SalesAmount])",
+      "IndentedOperation": "                Scan_Vertipaq: RelLogOp DependOnCols(1, 2)('Date'[MonthNumberOfYear], 'Product'[ProductLine]) 4-154 RequiredCols(1, 2, 23)('Date'[MonthNumberOfYear], 'Product'[ProductLine], 'Internet Sales'[SalesAmount])",
+      "Level": 4,
+      "RowNumber": 8,
+      "NextSiblingRowNumber": 8,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "'Internet Sales'[SalesAmount]: ScaLogOp DependOnCols(23)('Internet Sales'[SalesAmount]) Double DominantValue=NONE",
+      "IndentedOperation": "                'Internet Sales'[SalesAmount]: ScaLogOp DependOnCols(23)('Internet Sales'[SalesAmount]) Double DominantValue=NONE",
+      "Level": 4,
+      "RowNumber": 9,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Filter: RelLogOp DependOnCols(1)('Date'[MonthNumberOfYear]) 3-3 RequiredCols(1, 3)('Date'[MonthNumberOfYear], 'Date'[MonthNumberOfYear])",
+      "IndentedOperation": "            Filter: RelLogOp DependOnCols(1)('Date'[MonthNumberOfYear]) 3-3 RequiredCols(1, 3)('Date'[MonthNumberOfYear], 'Date'[MonthNumberOfYear])",
+      "Level": 3,
+      "RowNumber": 10,
+      "NextSiblingRowNumber": 15,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Scan_Vertipaq: RelLogOp DependOnCols()() 3-3 RequiredCols(3)('Date'[MonthNumberOfYear])",
+      "IndentedOperation": "                Scan_Vertipaq: RelLogOp DependOnCols()() 3-3 RequiredCols(3)('Date'[MonthNumberOfYear])",
+      "Level": 4,
+      "RowNumber": 11,
+      "NextSiblingRowNumber": 11,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "LessThanOrEqualTo: ScaLogOp DependOnCols(1, 3)('Date'[MonthNumberOfYear], 'Date'[MonthNumberOfYear]) Boolean DominantValue=NONE",
+      "IndentedOperation": "                LessThanOrEqualTo: ScaLogOp DependOnCols(1, 3)('Date'[MonthNumberOfYear], 'Date'[MonthNumberOfYear]) Boolean DominantValue=NONE",
+      "Level": 4,
+      "RowNumber": 12,
+      "NextSiblingRowNumber": 15,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "'Date'[MonthNumberOfYear]: ScaLogOp DependOnCols(3)('Date'[MonthNumberOfYear]) Integer DominantValue=NONE",
+      "IndentedOperation": "                    'Date'[MonthNumberOfYear]: ScaLogOp DependOnCols(3)('Date'[MonthNumberOfYear]) Integer DominantValue=NONE",
+      "Level": 5,
+      "RowNumber": 13,
+      "NextSiblingRowNumber": 13,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "'Date'[MonthNumberOfYear]: ScaLogOp DependOnCols(1)('Date'[MonthNumberOfYear]) Integer DominantValue=NONE",
+      "IndentedOperation": "                    'Date'[MonthNumberOfYear]: ScaLogOp DependOnCols(1)('Date'[MonthNumberOfYear]) Integer DominantValue=NONE",
+      "Level": 5,
+      "RowNumber": 14,
+      "NextSiblingRowNumber": 14,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Filter_Vertipaq: RelLogOp DependOnCols()() 0-0 RequiredCols(0)('Date'[CalendarYear])",
+      "IndentedOperation": "    Filter_Vertipaq: RelLogOp DependOnCols()() 0-0 RequiredCols(0)('Date'[CalendarYear])",
+      "Level": 1,
+      "RowNumber": 15,
+      "NextSiblingRowNumber": 18,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Scan_Vertipaq: RelLogOp DependOnCols()() 0-0 RequiredCols(0)('Date'[CalendarYear])",
+      "IndentedOperation": "        Scan_Vertipaq: RelLogOp DependOnCols()() 0-0 RequiredCols(0)('Date'[CalendarYear])",
+      "Level": 2,
+      "RowNumber": 16,
+      "NextSiblingRowNumber": 16,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "'Date'[CalendarYear] = 2003: ScaLogOp DependOnCols(0)('Date'[CalendarYear]) Boolean DominantValue=false",
+      "IndentedOperation": "        'Date'[CalendarYear] = 2003: ScaLogOp DependOnCols(0)('Date'[CalendarYear]) Boolean DominantValue=false",
+      "Level": 2,
+      "RowNumber": 17,
+      "NextSiblingRowNumber": 18,
+      "HighlightRow": false
+    }
+  ],
+  "ActivityID": "0D5AB633-90D7-4F1F-BD00-565A45EFE9EE",
+  "CommandText": "define measure 'Internet Sales'[Total Sales Amount] = Sum([SalesAmount])\nevaluate\n            calculatetable(\n                        addcolumns(\n                                    crossjoin(values('Date'[MonthNumberOfYear]), distinct('Product'[ProductLine])),\n                                    \"YTD\",\n                                    calculate([Total Sales Amount],\n                                                filter(\n                                                            All('Date'[MonthNumberOfYear]),\n                                                            'Date'[MonthNumberOfYear]\n                                                            <=\n                                                            earlier('Date'[MonthNumberOfYear])\n                                                )\n                                    )\n                        ),\n                        'Date'[CalendarYear] = 2003\n            )",
+  "Parameters": null,
+  "StartDatetime": "2025-02-09T12:50:07.276667+00:00"
+}

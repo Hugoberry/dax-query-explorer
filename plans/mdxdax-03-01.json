@@ -1,0 +1,195 @@
+{
+  "FileFormatVersion": 3,
+  "PhysicalQueryPlanRows": [
+    {
+      "Records": null,
+      "Operation": "AddColumns: IterPhyOp LogOp=AddColumns IterCols(0)(''[x])",
+      "IndentedOperation": "AddColumns: IterPhyOp LogOp=AddColumns IterCols(0)(''[x])",
+      "Level": 0,
+      "RowNumber": 1,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "SingletonTable: IterPhyOp LogOp=AddColumns",
+      "IndentedOperation": "    SingletonTable: IterPhyOp LogOp=AddColumns",
+      "Level": 1,
+      "RowNumber": 2,
+      "NextSiblingRowNumber": 2,
+      "HighlightRow": false
+    },
+    {
+      "Records": 1,
+      "Operation": "SpoolLookup: LookupPhyOp LogOp=Sum_Vertipaq Double #Records=1 #KeyCols=189 #ValueCols=1 DominantValue=BLANK",
+      "IndentedOperation": "    SpoolLookup: LookupPhyOp LogOp=Sum_Vertipaq Double #Records=1 #KeyCols=189 #ValueCols=1 DominantValue=BLANK",
+      "Level": 1,
+      "RowNumber": 3,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": false
+    },
+    {
+      "Records": 1,
+      "Operation": "ProjectionSpool<ProjectFusion<Copy>>: SpoolPhyOp #Records=1",
+      "IndentedOperation": "        ProjectionSpool<ProjectFusion<Copy>>: SpoolPhyOp #Records=1",
+      "Level": 2,
+      "RowNumber": 4,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "Cache: IterPhyOp #FieldCols=0 #ValueCols=1",
+      "IndentedOperation": "            Cache: IterPhyOp #FieldCols=0 #ValueCols=1",
+      "Level": 3,
+      "RowNumber": 5,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": true
+    },
+    {
+      "Records": 9087,
+      "Operation": "SpoolLookup: LookupPhyOp LogOp=Sum_Vertipaq LookupCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23)('Internet Sales'[ProductKey], 'Internet Sales'[OrderDateKey], 'Internet Sales'[DueDateKey], 'Internet Sales'[ShipDateKey], 'Internet Sales'[CustomerKey], 'Internet Sales'[PromotionKey], 'Internet Sales'[CurrencyKey], 'Internet Sales'[SalesTerritoryKey], 'Internet Sales'[SalesOrderNumber], 'Internet Sales'[SalesOrderLineNumber], 'Internet Sales'[RevisionNumber], 'Internet Sales'[OrderQuantity], 'Internet Sales'[UnitPrice], 'Internet Sales'[ExtendedAmount], 'Internet Sales'[UnitPriceDiscountPct], 'Internet Sales'[DiscountAmount], 'Internet Sales'[ProductStandardCost], 'Internet Sales'[TotalProductCost], 'Internet Sales'[SalesAmount], 'Internet Sales'[TaxAmt], 'Internet Sales'[Freight], 'Internet Sales'[CarrierTrackingNumber], 'Internet Sales'[CustomerPONumber]) Double #Records=9087 #KeyCols=189 #ValueCols=1 DominantValue=BLANK",
+      "IndentedOperation": "                SpoolLookup: LookupPhyOp LogOp=Sum_Vertipaq LookupCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23)('Internet Sales'[ProductKey], 'Internet Sales'[OrderDateKey], 'Internet Sales'[DueDateKey], 'Internet Sales'[ShipDateKey], 'Internet Sales'[CustomerKey], 'Internet Sales'[PromotionKey], 'Internet Sales'[CurrencyKey], 'Internet Sales'[SalesTerritoryKey], 'Internet Sales'[SalesOrderNumber], 'Internet Sales'[SalesOrderLineNumber], 'Internet Sales'[RevisionNumber], 'Internet Sales'[OrderQuantity], 'Internet Sales'[UnitPrice], 'Internet Sales'[ExtendedAmount], 'Internet Sales'[UnitPriceDiscountPct], 'Internet Sales'[DiscountAmount], 'Internet Sales'[ProductStandardCost], 'Internet Sales'[TotalProductCost], 'Internet Sales'[SalesAmount], 'Internet Sales'[TaxAmt], 'Internet Sales'[Freight], 'Internet Sales'[CarrierTrackingNumber], 'Internet Sales'[CustomerPONumber]) Double #Records=9087 #KeyCols=189 #ValueCols=1 DominantValue=BLANK",
+      "Level": 4,
+      "RowNumber": 6,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": false
+    },
+    {
+      "Records": 9087,
+      "Operation": "ProjectionSpool<ProjectFusion<Copy>>: SpoolPhyOp #Records=9087",
+      "IndentedOperation": "                    ProjectionSpool<ProjectFusion<Copy>>: SpoolPhyOp #Records=9087",
+      "Level": 5,
+      "RowNumber": 7,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "Cache: IterPhyOp #FieldCols=23 #ValueCols=1",
+      "IndentedOperation": "                        Cache: IterPhyOp #FieldCols=23 #ValueCols=1",
+      "Level": 6,
+      "RowNumber": 8,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": true
+    }
+  ],
+  "LogicalQueryPlanRows": [
+    {
+      "Operation": "AddColumns: RelLogOp DependOnCols()() 0-0 RequiredCols(0)(''[x])",
+      "IndentedOperation": "AddColumns: RelLogOp DependOnCols()() 0-0 RequiredCols(0)(''[x])",
+      "Level": 0,
+      "RowNumber": 1,
+      "NextSiblingRowNumber": 15,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Sum_Vertipaq: ScaLogOp DependOnCols()() Double DominantValue=BLANK",
+      "IndentedOperation": "    Sum_Vertipaq: ScaLogOp DependOnCols()() Double DominantValue=BLANK",
+      "Level": 1,
+      "RowNumber": 2,
+      "NextSiblingRowNumber": 15,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Filter_Vertipaq: RelLogOp DependOnCols()() 0-150 RequiredCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23)('Internet Sales'[ProductKey], 'Internet Sales'[OrderDateKey], 'Internet Sales'[DueDateKey], 'Internet Sales'[ShipDateKey], 'Internet Sales'[CustomerKey], 'Internet Sales'[PromotionKey], 'Internet Sales'[CurrencyKey], 'Internet Sales'[SalesTerritoryKey], 'Internet Sales'[SalesOrderNumber], 'Internet Sales'[SalesOrderLineNumber], 'Internet Sales'[RevisionNumber], 'Internet Sales'[OrderQuantity], 'Internet Sales'[UnitPrice], 'Internet Sales'[ExtendedAmount], 'Internet Sales'[UnitPriceDiscountPct], 'Internet Sales'[DiscountAmount], 'Internet Sales'[ProductStandardCost], 'Internet Sales'[TotalProductCost], 'Internet Sales'[SalesAmount], 'Internet Sales'[TaxAmt], 'Internet Sales'[Freight], 'Internet Sales'[CarrierTrackingNumber], 'Internet Sales'[CustomerPONumber])",
+      "IndentedOperation": "        Filter_Vertipaq: RelLogOp DependOnCols()() 0-150 RequiredCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23)('Internet Sales'[ProductKey], 'Internet Sales'[OrderDateKey], 'Internet Sales'[DueDateKey], 'Internet Sales'[ShipDateKey], 'Internet Sales'[CustomerKey], 'Internet Sales'[PromotionKey], 'Internet Sales'[CurrencyKey], 'Internet Sales'[SalesTerritoryKey], 'Internet Sales'[SalesOrderNumber], 'Internet Sales'[SalesOrderLineNumber], 'Internet Sales'[RevisionNumber], 'Internet Sales'[OrderQuantity], 'Internet Sales'[UnitPrice], 'Internet Sales'[ExtendedAmount], 'Internet Sales'[UnitPriceDiscountPct], 'Internet Sales'[DiscountAmount], 'Internet Sales'[ProductStandardCost], 'Internet Sales'[TotalProductCost], 'Internet Sales'[SalesAmount], 'Internet Sales'[TaxAmt], 'Internet Sales'[Freight], 'Internet Sales'[CarrierTrackingNumber], 'Internet Sales'[CustomerPONumber])",
+      "Level": 2,
+      "RowNumber": 3,
+      "NextSiblingRowNumber": 12,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Filter_Vertipaq: RelLogOp DependOnCols()() 0-150 RequiredCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 38)('Internet Sales'[ProductKey], 'Internet Sales'[OrderDateKey], 'Internet Sales'[DueDateKey], 'Internet Sales'[ShipDateKey], 'Internet Sales'[CustomerKey], 'Internet Sales'[PromotionKey], 'Internet Sales'[CurrencyKey], 'Internet Sales'[SalesTerritoryKey], 'Internet Sales'[SalesOrderNumber], 'Internet Sales'[SalesOrderLineNumber], 'Internet Sales'[RevisionNumber], 'Internet Sales'[OrderQuantity], 'Internet Sales'[UnitPrice], 'Internet Sales'[ExtendedAmount], 'Internet Sales'[UnitPriceDiscountPct], 'Internet Sales'[DiscountAmount], 'Internet Sales'[ProductStandardCost], 'Internet Sales'[TotalProductCost], 'Internet Sales'[SalesAmount], 'Internet Sales'[TaxAmt], 'Internet Sales'[Freight], 'Internet Sales'[CarrierTrackingNumber], 'Internet Sales'[CustomerPONumber], 'Customer'[YearlyIncome])",
+      "IndentedOperation": "            Filter_Vertipaq: RelLogOp DependOnCols()() 0-150 RequiredCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 38)('Internet Sales'[ProductKey], 'Internet Sales'[OrderDateKey], 'Internet Sales'[DueDateKey], 'Internet Sales'[ShipDateKey], 'Internet Sales'[CustomerKey], 'Internet Sales'[PromotionKey], 'Internet Sales'[CurrencyKey], 'Internet Sales'[SalesTerritoryKey], 'Internet Sales'[SalesOrderNumber], 'Internet Sales'[SalesOrderLineNumber], 'Internet Sales'[RevisionNumber], 'Internet Sales'[OrderQuantity], 'Internet Sales'[UnitPrice], 'Internet Sales'[ExtendedAmount], 'Internet Sales'[UnitPriceDiscountPct], 'Internet Sales'[DiscountAmount], 'Internet Sales'[ProductStandardCost], 'Internet Sales'[TotalProductCost], 'Internet Sales'[SalesAmount], 'Internet Sales'[TaxAmt], 'Internet Sales'[Freight], 'Internet Sales'[CarrierTrackingNumber], 'Internet Sales'[CustomerPONumber], 'Customer'[YearlyIncome])",
+      "Level": 3,
+      "RowNumber": 4,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Scan_Vertipaq: RelLogOp DependOnCols()() 0-150 RequiredCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 38, 98)('Internet Sales'[ProductKey], 'Internet Sales'[OrderDateKey], 'Internet Sales'[DueDateKey], 'Internet Sales'[ShipDateKey], 'Internet Sales'[CustomerKey], 'Internet Sales'[PromotionKey], 'Internet Sales'[CurrencyKey], 'Internet Sales'[SalesTerritoryKey], 'Internet Sales'[SalesOrderNumber], 'Internet Sales'[SalesOrderLineNumber], 'Internet Sales'[RevisionNumber], 'Internet Sales'[OrderQuantity], 'Internet Sales'[UnitPrice], 'Internet Sales'[ExtendedAmount], 'Internet Sales'[UnitPriceDiscountPct], 'Internet Sales'[DiscountAmount], 'Internet Sales'[ProductStandardCost], 'Internet Sales'[TotalProductCost], 'Internet Sales'[SalesAmount], 'Internet Sales'[TaxAmt], 'Internet Sales'[Freight], 'Internet Sales'[CarrierTrackingNumber], 'Internet Sales'[CustomerPONumber], 'Customer'[YearlyIncome], 'Product'[List Price])",
+      "IndentedOperation": "                Scan_Vertipaq: RelLogOp DependOnCols()() 0-150 RequiredCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 38, 98)('Internet Sales'[ProductKey], 'Internet Sales'[OrderDateKey], 'Internet Sales'[DueDateKey], 'Internet Sales'[ShipDateKey], 'Internet Sales'[CustomerKey], 'Internet Sales'[PromotionKey], 'Internet Sales'[CurrencyKey], 'Internet Sales'[SalesTerritoryKey], 'Internet Sales'[SalesOrderNumber], 'Internet Sales'[SalesOrderLineNumber], 'Internet Sales'[RevisionNumber], 'Internet Sales'[OrderQuantity], 'Internet Sales'[UnitPrice], 'Internet Sales'[ExtendedAmount], 'Internet Sales'[UnitPriceDiscountPct], 'Internet Sales'[DiscountAmount], 'Internet Sales'[ProductStandardCost], 'Internet Sales'[TotalProductCost], 'Internet Sales'[SalesAmount], 'Internet Sales'[TaxAmt], 'Internet Sales'[Freight], 'Internet Sales'[CarrierTrackingNumber], 'Internet Sales'[CustomerPONumber], 'Customer'[YearlyIncome], 'Product'[List Price])",
+      "Level": 4,
+      "RowNumber": 5,
+      "NextSiblingRowNumber": 5,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "LessThan: ScaLogOp DependOnCols(98)('Product'[List Price]) Boolean DominantValue=NONE",
+      "IndentedOperation": "                LessThan: ScaLogOp DependOnCols(98)('Product'[List Price]) Boolean DominantValue=NONE",
+      "Level": 4,
+      "RowNumber": 6,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "'Product'[List Price]: ScaLogOp DependOnCols(98)('Product'[List Price]) Double DominantValue=NONE",
+      "IndentedOperation": "                    'Product'[List Price]: ScaLogOp DependOnCols(98)('Product'[List Price]) Double DominantValue=NONE",
+      "Level": 5,
+      "RowNumber": 7,
+      "NextSiblingRowNumber": 7,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Constant: ScaLogOp DependOnCols()() Double DominantValue=10",
+      "IndentedOperation": "                    Constant: ScaLogOp DependOnCols()() Double DominantValue=10",
+      "Level": 5,
+      "RowNumber": 8,
+      "NextSiblingRowNumber": 8,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "LessThan: ScaLogOp DependOnCols(38)('Customer'[YearlyIncome]) Boolean DominantValue=NONE",
+      "IndentedOperation": "            LessThan: ScaLogOp DependOnCols(38)('Customer'[YearlyIncome]) Boolean DominantValue=NONE",
+      "Level": 3,
+      "RowNumber": 9,
+      "NextSiblingRowNumber": 12,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "'Customer'[YearlyIncome]: ScaLogOp DependOnCols(38)('Customer'[YearlyIncome]) Integer DominantValue=NONE",
+      "IndentedOperation": "                'Customer'[YearlyIncome]: ScaLogOp DependOnCols(38)('Customer'[YearlyIncome]) Integer DominantValue=NONE",
+      "Level": 4,
+      "RowNumber": 10,
+      "NextSiblingRowNumber": 10,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Constant: ScaLogOp DependOnCols()() Integer DominantValue=50000",
+      "IndentedOperation": "                Constant: ScaLogOp DependOnCols()() Integer DominantValue=50000",
+      "Level": 4,
+      "RowNumber": 11,
+      "NextSiblingRowNumber": 11,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Sum_Vertipaq: ScaLogOp MeasureRef=[Internet Sales] DependOnCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23)('Internet Sales'[ProductKey], 'Internet Sales'[OrderDateKey], 'Internet Sales'[DueDateKey], 'Internet Sales'[ShipDateKey], 'Internet Sales'[CustomerKey], 'Internet Sales'[PromotionKey], 'Internet Sales'[CurrencyKey], 'Internet Sales'[SalesTerritoryKey], 'Internet Sales'[SalesOrderNumber], 'Internet Sales'[SalesOrderLineNumber], 'Internet Sales'[RevisionNumber], 'Internet Sales'[OrderQuantity], 'Internet Sales'[UnitPrice], 'Internet Sales'[ExtendedAmount], 'Internet Sales'[UnitPriceDiscountPct], 'Internet Sales'[DiscountAmount], 'Internet Sales'[ProductStandardCost], 'Internet Sales'[TotalProductCost], 'Internet Sales'[SalesAmount], 'Internet Sales'[TaxAmt], 'Internet Sales'[Freight], 'Internet Sales'[CarrierTrackingNumber], 'Internet Sales'[CustomerPONumber]) Double DominantValue=BLANK",
+      "IndentedOperation": "        Sum_Vertipaq: ScaLogOp MeasureRef=[Internet Sales] DependOnCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23)('Internet Sales'[ProductKey], 'Internet Sales'[OrderDateKey], 'Internet Sales'[DueDateKey], 'Internet Sales'[ShipDateKey], 'Internet Sales'[CustomerKey], 'Internet Sales'[PromotionKey], 'Internet Sales'[CurrencyKey], 'Internet Sales'[SalesTerritoryKey], 'Internet Sales'[SalesOrderNumber], 'Internet Sales'[SalesOrderLineNumber], 'Internet Sales'[RevisionNumber], 'Internet Sales'[OrderQuantity], 'Internet Sales'[UnitPrice], 'Internet Sales'[ExtendedAmount], 'Internet Sales'[UnitPriceDiscountPct], 'Internet Sales'[DiscountAmount], 'Internet Sales'[ProductStandardCost], 'Internet Sales'[TotalProductCost], 'Internet Sales'[SalesAmount], 'Internet Sales'[TaxAmt], 'Internet Sales'[Freight], 'Internet Sales'[CarrierTrackingNumber], 'Internet Sales'[CustomerPONumber]) Double DominantValue=BLANK",
+      "Level": 2,
+      "RowNumber": 12,
+      "NextSiblingRowNumber": 15,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Scan_Vertipaq: RelLogOp DependOnCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23)('Internet Sales'[ProductKey], 'Internet Sales'[OrderDateKey], 'Internet Sales'[DueDateKey], 'Internet Sales'[ShipDateKey], 'Internet Sales'[CustomerKey], 'Internet Sales'[PromotionKey], 'Internet Sales'[CurrencyKey], 'Internet Sales'[SalesTerritoryKey], 'Internet Sales'[SalesOrderNumber], 'Internet Sales'[SalesOrderLineNumber], 'Internet Sales'[RevisionNumber], 'Internet Sales'[OrderQuantity], 'Internet Sales'[UnitPrice], 'Internet Sales'[ExtendedAmount], 'Internet Sales'[UnitPriceDiscountPct], 'Internet Sales'[DiscountAmount], 'Internet Sales'[ProductStandardCost], 'Internet Sales'[TotalProductCost], 'Internet Sales'[SalesAmount], 'Internet Sales'[TaxAmt], 'Internet Sales'[Freight], 'Internet Sales'[CarrierTrackingNumber], 'Internet Sales'[CustomerPONumber]) 151-301 RequiredCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 170)('Internet Sales'[ProductKey], 'Internet Sales'[OrderDateKey], 'Internet Sales'[DueDateKey], 'Internet Sales'[ShipDateKey], 'Internet Sales'[CustomerKey], 'Internet Sales'[PromotionKey], 'Internet Sales'[CurrencyKey], 'Internet Sales'[SalesTerritoryKey], 'Internet Sales'[SalesOrderNumber], 'Internet Sales'[SalesOrderLineNumber], 'Internet Sales'[RevisionNumber], 'Internet Sales'[OrderQuantity], 'Internet Sales'[UnitPrice], 'Internet Sales'[ExtendedAmount], 'Internet Sales'[UnitPriceDiscountPct], 'Internet Sales'[DiscountAmount], 'Internet Sales'[ProductStandardCost], 'Internet Sales'[TotalProductCost], 'Internet Sales'[SalesAmount], 'Internet Sales'[TaxAmt], 'Internet Sales'[Freight], 'Internet Sales'[CarrierTrackingNumber], 'Internet Sales'[CustomerPONumber], 'Internet Sales'[SalesAmount])",
+      "IndentedOperation": "            Scan_Vertipaq: RelLogOp DependOnCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23)('Internet Sales'[ProductKey], 'Internet Sales'[OrderDateKey], 'Internet Sales'[DueDateKey], 'Internet Sales'[ShipDateKey], 'Internet Sales'[CustomerKey], 'Internet Sales'[PromotionKey], 'Internet Sales'[CurrencyKey], 'Internet Sales'[SalesTerritoryKey], 'Internet Sales'[SalesOrderNumber], 'Internet Sales'[SalesOrderLineNumber], 'Internet Sales'[RevisionNumber], 'Internet Sales'[OrderQuantity], 'Internet Sales'[UnitPrice], 'Internet Sales'[ExtendedAmount], 'Internet Sales'[UnitPriceDiscountPct], 'Internet Sales'[DiscountAmount], 'Internet Sales'[ProductStandardCost], 'Internet Sales'[TotalProductCost], 'Internet Sales'[SalesAmount], 'Internet Sales'[TaxAmt], 'Internet Sales'[Freight], 'Internet Sales'[CarrierTrackingNumber], 'Internet Sales'[CustomerPONumber]) 151-301 RequiredCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 170)('Internet Sales'[ProductKey], 'Internet Sales'[OrderDateKey], 'Internet Sales'[DueDateKey], 'Internet Sales'[ShipDateKey], 'Internet Sales'[CustomerKey], 'Internet Sales'[PromotionKey], 'Internet Sales'[CurrencyKey], 'Internet Sales'[SalesTerritoryKey], 'Internet Sales'[SalesOrderNumber], 'Internet Sales'[SalesOrderLineNumber], 'Internet Sales'[RevisionNumber], 'Internet Sales'[OrderQuantity], 'Internet Sales'[UnitPrice], 'Internet Sales'[ExtendedAmount], 'Internet Sales'[UnitPriceDiscountPct], 'Internet Sales'[DiscountAmount], 'Internet Sales'[ProductStandardCost], 'Internet Sales'[TotalProductCost], 'Internet Sales'[SalesAmount], 'Internet Sales'[TaxAmt], 'Internet Sales'[Freight], 'Internet Sales'[CarrierTrackingNumber], 'Internet Sales'[CustomerPONumber], 'Internet Sales'[SalesAmount])",
+      "Level": 3,
+      "RowNumber": 13,
+      "NextSiblingRowNumber": 13,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "'Internet Sales'[SalesAmount]: ScaLogOp DependOnCols(170)('Internet Sales'[SalesAmount]) Double DominantValue=NONE",
+      "IndentedOperation": "            'Internet Sales'[SalesAmount]: ScaLogOp DependOnCols(170)('Internet Sales'[SalesAmount]) Double DominantValue=NONE",
+      "Level": 3,
+      "RowNumber": 14,
+      "NextSiblingRowNumber": 15,
+      "HighlightRow": false
+    }
+  ],
+  "ActivityID": "0D5AB633-90D7-4F1F-BD00-565A45EFE9EE",
+  "CommandText": "evaluate row(\"x\",\n            sumx(\n                        filter(\n                                    'Internet Sales',\n                                    Related(Product[List Price]) < 10\n                                    && Related(Customer[YearlyIncome]) < 50000\n                        ),\n                        [Internet Sales]\n            )\n)",
+  "Parameters": null,
+  "StartDatetime": "2025-02-09T13:43:56.453333+00:00"
+}

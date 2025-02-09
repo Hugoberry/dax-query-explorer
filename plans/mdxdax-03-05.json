@@ -1,0 +1,281 @@
+{
+  "FileFormatVersion": 3,
+  "PhysicalQueryPlanRows": [
+    {
+      "Records": null,
+      "Operation": "AddColumns: IterPhyOp LogOp=AddColumns IterCols(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)('Date'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Date'[DateKey], 'Date'[FullDateAlternateKey], 'Date'[DayNumberOfWeek], 'Date'[EnglishDayNameOfWeek], 'Date'[SpanishDayNameOfWeek], 'Date'[FrenchDayNameOfWeek], 'Date'[DayNumberOfMonth], 'Date'[DayNumberOfYear], 'Date'[WeekNumberOfYear], 'Date'[EnglishMonthName], 'Date'[SpanishMonthName], 'Date'[FrenchMonthName], 'Date'[MonthNumberOfYear], 'Date'[CalendarQuarter], 'Date'[CalendarYear], 'Date'[CalendarSemester], 'Date'[FiscalQuarter], 'Date'[FiscalYear], 'Date'[FiscalSemester], ''[x])",
+      "IndentedOperation": "AddColumns: IterPhyOp LogOp=AddColumns IterCols(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)('Date'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Date'[DateKey], 'Date'[FullDateAlternateKey], 'Date'[DayNumberOfWeek], 'Date'[EnglishDayNameOfWeek], 'Date'[SpanishDayNameOfWeek], 'Date'[FrenchDayNameOfWeek], 'Date'[DayNumberOfMonth], 'Date'[DayNumberOfYear], 'Date'[WeekNumberOfYear], 'Date'[EnglishMonthName], 'Date'[SpanishMonthName], 'Date'[FrenchMonthName], 'Date'[MonthNumberOfYear], 'Date'[CalendarQuarter], 'Date'[CalendarYear], 'Date'[CalendarSemester], 'Date'[FiscalQuarter], 'Date'[FiscalYear], 'Date'[FiscalSemester], ''[x])",
+      "Level": 0,
+      "RowNumber": 1,
+      "NextSiblingRowNumber": 23,
+      "HighlightRow": false
+    },
+    {
+      "Records": 3652,
+      "Operation": "Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)('Date'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Date'[DateKey], 'Date'[FullDateAlternateKey], 'Date'[DayNumberOfWeek], 'Date'[EnglishDayNameOfWeek], 'Date'[SpanishDayNameOfWeek], 'Date'[FrenchDayNameOfWeek], 'Date'[DayNumberOfMonth], 'Date'[DayNumberOfYear], 'Date'[WeekNumberOfYear], 'Date'[EnglishMonthName], 'Date'[SpanishMonthName], 'Date'[FrenchMonthName], 'Date'[MonthNumberOfYear], 'Date'[CalendarQuarter], 'Date'[CalendarYear], 'Date'[CalendarSemester], 'Date'[FiscalQuarter], 'Date'[FiscalYear], 'Date'[FiscalSemester]) #Records=3652 #KeyCols=189 #ValueCols=0",
+      "IndentedOperation": "    Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)('Date'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Date'[DateKey], 'Date'[FullDateAlternateKey], 'Date'[DayNumberOfWeek], 'Date'[EnglishDayNameOfWeek], 'Date'[SpanishDayNameOfWeek], 'Date'[FrenchDayNameOfWeek], 'Date'[DayNumberOfMonth], 'Date'[DayNumberOfYear], 'Date'[WeekNumberOfYear], 'Date'[EnglishMonthName], 'Date'[SpanishMonthName], 'Date'[FrenchMonthName], 'Date'[MonthNumberOfYear], 'Date'[CalendarQuarter], 'Date'[CalendarYear], 'Date'[CalendarSemester], 'Date'[FiscalQuarter], 'Date'[FiscalYear], 'Date'[FiscalSemester]) #Records=3652 #KeyCols=189 #ValueCols=0",
+      "Level": 1,
+      "RowNumber": 2,
+      "NextSiblingRowNumber": 5,
+      "HighlightRow": false
+    },
+    {
+      "Records": 3652,
+      "Operation": "ProjectionSpool<ProjectFusion<>>: SpoolPhyOp #Records=3652",
+      "IndentedOperation": "        ProjectionSpool<ProjectFusion<>>: SpoolPhyOp #Records=3652",
+      "Level": 2,
+      "RowNumber": 3,
+      "NextSiblingRowNumber": 5,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "Cache: IterPhyOp #FieldCols=20 #ValueCols=0",
+      "IndentedOperation": "            Cache: IterPhyOp #FieldCols=20 #ValueCols=0",
+      "Level": 3,
+      "RowNumber": 4,
+      "NextSiblingRowNumber": 4,
+      "HighlightRow": true
+    },
+    {
+      "Records": 1464,
+      "Operation": "SpoolLookup: LookupPhyOp LogOp=SumX LookupCols(1)('Date'[DateKey]) Double #Records=1464 #KeyCols=1 #ValueCols=1 DominantValue=BLANK",
+      "IndentedOperation": "    SpoolLookup: LookupPhyOp LogOp=SumX LookupCols(1)('Date'[DateKey]) Double #Records=1464 #KeyCols=1 #ValueCols=1 DominantValue=BLANK",
+      "Level": 1,
+      "RowNumber": 5,
+      "NextSiblingRowNumber": 23,
+      "HighlightRow": false
+    },
+    {
+      "Records": 1464,
+      "Operation": "AggregationSpool<Sum>: SpoolPhyOp #Records=1464",
+      "IndentedOperation": "        AggregationSpool<Sum>: SpoolPhyOp #Records=1464",
+      "Level": 2,
+      "RowNumber": 6,
+      "NextSiblingRowNumber": 23,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "Extend_Lookup: IterPhyOp LogOp=Extend_Lookup'Internet Sales'[SalesAmount] IterCols(39)('Internet Sales'[SalesAmount])",
+      "IndentedOperation": "            Extend_Lookup: IterPhyOp LogOp=Extend_Lookup'Internet Sales'[SalesAmount] IterCols(39)('Internet Sales'[SalesAmount])",
+      "Level": 3,
+      "RowNumber": 7,
+      "NextSiblingRowNumber": 23,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "Filter: IterPhyOp LogOp=Filter IterCols(1, 20, 22, 39)('Date'[DateKey], 'Internet Sales'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Internet Sales'[OrderDateKey], 'Internet Sales'[SalesAmount])",
+      "IndentedOperation": "                Filter: IterPhyOp LogOp=Filter IterCols(1, 20, 22, 39)('Date'[DateKey], 'Internet Sales'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Internet Sales'[OrderDateKey], 'Internet Sales'[SalesAmount])",
+      "Level": 4,
+      "RowNumber": 8,
+      "NextSiblingRowNumber": 22,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "Extend_Lookup: IterPhyOp LogOp=LessThanOrEqualTo IterCols(1, 22)('Date'[DateKey], 'Internet Sales'[OrderDateKey])",
+      "IndentedOperation": "                    Extend_Lookup: IterPhyOp LogOp=LessThanOrEqualTo IterCols(1, 22)('Date'[DateKey], 'Internet Sales'[OrderDateKey])",
+      "Level": 5,
+      "RowNumber": 9,
+      "NextSiblingRowNumber": 22,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "CrossApply: IterPhyOp LogOp=LessThanOrEqualTo IterCols(1, 22)('Date'[DateKey], 'Internet Sales'[OrderDateKey])",
+      "IndentedOperation": "                        CrossApply: IterPhyOp LogOp=LessThanOrEqualTo IterCols(1, 22)('Date'[DateKey], 'Internet Sales'[OrderDateKey])",
+      "Level": 6,
+      "RowNumber": 10,
+      "NextSiblingRowNumber": 19,
+      "HighlightRow": false
+    },
+    {
+      "Records": 3652,
+      "Operation": "Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(1)('Date'[DateKey]) #Records=3652 #KeyCols=1 #ValueCols=0",
+      "IndentedOperation": "                            Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(1)('Date'[DateKey]) #Records=3652 #KeyCols=1 #ValueCols=0",
+      "Level": 7,
+      "RowNumber": 11,
+      "NextSiblingRowNumber": 16,
+      "HighlightRow": false
+    },
+    {
+      "Records": 3652,
+      "Operation": "AggregationSpool<GroupBy>: SpoolPhyOp #Records=3652",
+      "IndentedOperation": "                                AggregationSpool<GroupBy>: SpoolPhyOp #Records=3652",
+      "Level": 8,
+      "RowNumber": 12,
+      "NextSiblingRowNumber": 16,
+      "HighlightRow": false
+    },
+    {
+      "Records": 3652,
+      "Operation": "Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)('Date'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Date'[DateKey], 'Date'[FullDateAlternateKey], 'Date'[DayNumberOfWeek], 'Date'[EnglishDayNameOfWeek], 'Date'[SpanishDayNameOfWeek], 'Date'[FrenchDayNameOfWeek], 'Date'[DayNumberOfMonth], 'Date'[DayNumberOfYear], 'Date'[WeekNumberOfYear], 'Date'[EnglishMonthName], 'Date'[SpanishMonthName], 'Date'[FrenchMonthName], 'Date'[MonthNumberOfYear], 'Date'[CalendarQuarter], 'Date'[CalendarYear], 'Date'[CalendarSemester], 'Date'[FiscalQuarter], 'Date'[FiscalYear], 'Date'[FiscalSemester]) #Records=3652 #KeyCols=189 #ValueCols=0",
+      "IndentedOperation": "                                    Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)('Date'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Date'[DateKey], 'Date'[FullDateAlternateKey], 'Date'[DayNumberOfWeek], 'Date'[EnglishDayNameOfWeek], 'Date'[SpanishDayNameOfWeek], 'Date'[FrenchDayNameOfWeek], 'Date'[DayNumberOfMonth], 'Date'[DayNumberOfYear], 'Date'[WeekNumberOfYear], 'Date'[EnglishMonthName], 'Date'[SpanishMonthName], 'Date'[FrenchMonthName], 'Date'[MonthNumberOfYear], 'Date'[CalendarQuarter], 'Date'[CalendarYear], 'Date'[CalendarSemester], 'Date'[FiscalQuarter], 'Date'[FiscalYear], 'Date'[FiscalSemester]) #Records=3652 #KeyCols=189 #ValueCols=0",
+      "Level": 9,
+      "RowNumber": 13,
+      "NextSiblingRowNumber": 16,
+      "HighlightRow": false
+    },
+    {
+      "Records": 3652,
+      "Operation": "ProjectionSpool<ProjectFusion<>>: SpoolPhyOp #Records=3652",
+      "IndentedOperation": "                                        ProjectionSpool<ProjectFusion<>>: SpoolPhyOp #Records=3652",
+      "Level": 10,
+      "RowNumber": 14,
+      "NextSiblingRowNumber": 16,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "Cache: IterPhyOp #FieldCols=20 #ValueCols=0",
+      "IndentedOperation": "                                            Cache: IterPhyOp #FieldCols=20 #ValueCols=0",
+      "Level": 11,
+      "RowNumber": 15,
+      "NextSiblingRowNumber": 15,
+      "HighlightRow": true
+    },
+    {
+      "Records": 60398,
+      "Operation": "Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(20, 22, 39)('Internet Sales'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Internet Sales'[OrderDateKey], 'Internet Sales'[SalesAmount]) #Records=60398 #KeyCols=189 #ValueCols=0",
+      "IndentedOperation": "                            Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(20, 22, 39)('Internet Sales'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Internet Sales'[OrderDateKey], 'Internet Sales'[SalesAmount]) #Records=60398 #KeyCols=189 #ValueCols=0",
+      "Level": 7,
+      "RowNumber": 16,
+      "NextSiblingRowNumber": 19,
+      "HighlightRow": false
+    },
+    {
+      "Records": 60398,
+      "Operation": "ProjectionSpool<ProjectFusion<>>: SpoolPhyOp #Records=60398",
+      "IndentedOperation": "                                ProjectionSpool<ProjectFusion<>>: SpoolPhyOp #Records=60398",
+      "Level": 8,
+      "RowNumber": 17,
+      "NextSiblingRowNumber": 19,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "Cache: IterPhyOp #FieldCols=3 #ValueCols=0",
+      "IndentedOperation": "                                    Cache: IterPhyOp #FieldCols=3 #ValueCols=0",
+      "Level": 9,
+      "RowNumber": 18,
+      "NextSiblingRowNumber": 18,
+      "HighlightRow": true
+    },
+    {
+      "Records": null,
+      "Operation": "LessThanOrEqualTo: LookupPhyOp LogOp=LessThanOrEqualTo LookupCols(1, 22)('Date'[DateKey], 'Internet Sales'[OrderDateKey]) Boolean",
+      "IndentedOperation": "                        LessThanOrEqualTo: LookupPhyOp LogOp=LessThanOrEqualTo LookupCols(1, 22)('Date'[DateKey], 'Internet Sales'[OrderDateKey]) Boolean",
+      "Level": 6,
+      "RowNumber": 19,
+      "NextSiblingRowNumber": 22,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "ColValue<'Internet Sales'[OrderDateKey]>: LookupPhyOp LogOp=ColValue<'Internet Sales'[OrderDateKey]>'Internet Sales'[OrderDateKey] LookupCols(22)('Internet Sales'[OrderDateKey]) Integer",
+      "IndentedOperation": "                            ColValue<'Internet Sales'[OrderDateKey]>: LookupPhyOp LogOp=ColValue<'Internet Sales'[OrderDateKey]>'Internet Sales'[OrderDateKey] LookupCols(22)('Internet Sales'[OrderDateKey]) Integer",
+      "Level": 7,
+      "RowNumber": 20,
+      "NextSiblingRowNumber": 20,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "ColValue<'Date'[DateKey]>: LookupPhyOp LogOp=ColValue<'Date'[DateKey]>'Date'[DateKey] LookupCols(1)('Date'[DateKey]) Integer",
+      "IndentedOperation": "                            ColValue<'Date'[DateKey]>: LookupPhyOp LogOp=ColValue<'Date'[DateKey]>'Date'[DateKey] LookupCols(1)('Date'[DateKey]) Integer",
+      "Level": 7,
+      "RowNumber": 21,
+      "NextSiblingRowNumber": 21,
+      "HighlightRow": false
+    },
+    {
+      "Records": null,
+      "Operation": "ColValue<'Internet Sales'[SalesAmount]>: LookupPhyOp LogOp=ColValue<'Internet Sales'[SalesAmount]>'Internet Sales'[SalesAmount] LookupCols(39)('Internet Sales'[SalesAmount]) Double",
+      "IndentedOperation": "                ColValue<'Internet Sales'[SalesAmount]>: LookupPhyOp LogOp=ColValue<'Internet Sales'[SalesAmount]>'Internet Sales'[SalesAmount] LookupCols(39)('Internet Sales'[SalesAmount]) Double",
+      "Level": 4,
+      "RowNumber": 22,
+      "NextSiblingRowNumber": 23,
+      "HighlightRow": false
+    }
+  ],
+  "LogicalQueryPlanRows": [
+    {
+      "Operation": "AddColumns: RelLogOp DependOnCols()() 0-20 RequiredCols(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)('Date'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Date'[DateKey], 'Date'[FullDateAlternateKey], 'Date'[DayNumberOfWeek], 'Date'[EnglishDayNameOfWeek], 'Date'[SpanishDayNameOfWeek], 'Date'[FrenchDayNameOfWeek], 'Date'[DayNumberOfMonth], 'Date'[DayNumberOfYear], 'Date'[WeekNumberOfYear], 'Date'[EnglishMonthName], 'Date'[SpanishMonthName], 'Date'[FrenchMonthName], 'Date'[MonthNumberOfYear], 'Date'[CalendarQuarter], 'Date'[CalendarYear], 'Date'[CalendarSemester], 'Date'[FiscalQuarter], 'Date'[FiscalYear], 'Date'[FiscalSemester], ''[x])",
+      "IndentedOperation": "AddColumns: RelLogOp DependOnCols()() 0-20 RequiredCols(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)('Date'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Date'[DateKey], 'Date'[FullDateAlternateKey], 'Date'[DayNumberOfWeek], 'Date'[EnglishDayNameOfWeek], 'Date'[SpanishDayNameOfWeek], 'Date'[FrenchDayNameOfWeek], 'Date'[DayNumberOfMonth], 'Date'[DayNumberOfYear], 'Date'[WeekNumberOfYear], 'Date'[EnglishMonthName], 'Date'[SpanishMonthName], 'Date'[FrenchMonthName], 'Date'[MonthNumberOfYear], 'Date'[CalendarQuarter], 'Date'[CalendarYear], 'Date'[CalendarSemester], 'Date'[FiscalQuarter], 'Date'[FiscalYear], 'Date'[FiscalSemester], ''[x])",
+      "Level": 0,
+      "RowNumber": 1,
+      "NextSiblingRowNumber": 10,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Scan_Vertipaq: RelLogOp DependOnCols()() 0-19 RequiredCols(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)('Date'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Date'[DateKey], 'Date'[FullDateAlternateKey], 'Date'[DayNumberOfWeek], 'Date'[EnglishDayNameOfWeek], 'Date'[SpanishDayNameOfWeek], 'Date'[FrenchDayNameOfWeek], 'Date'[DayNumberOfMonth], 'Date'[DayNumberOfYear], 'Date'[WeekNumberOfYear], 'Date'[EnglishMonthName], 'Date'[SpanishMonthName], 'Date'[FrenchMonthName], 'Date'[MonthNumberOfYear], 'Date'[CalendarQuarter], 'Date'[CalendarYear], 'Date'[CalendarSemester], 'Date'[FiscalQuarter], 'Date'[FiscalYear], 'Date'[FiscalSemester])",
+      "IndentedOperation": "    Scan_Vertipaq: RelLogOp DependOnCols()() 0-19 RequiredCols(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)('Date'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Date'[DateKey], 'Date'[FullDateAlternateKey], 'Date'[DayNumberOfWeek], 'Date'[EnglishDayNameOfWeek], 'Date'[SpanishDayNameOfWeek], 'Date'[FrenchDayNameOfWeek], 'Date'[DayNumberOfMonth], 'Date'[DayNumberOfYear], 'Date'[WeekNumberOfYear], 'Date'[EnglishMonthName], 'Date'[SpanishMonthName], 'Date'[FrenchMonthName], 'Date'[MonthNumberOfYear], 'Date'[CalendarQuarter], 'Date'[CalendarYear], 'Date'[CalendarSemester], 'Date'[FiscalQuarter], 'Date'[FiscalYear], 'Date'[FiscalSemester])",
+      "Level": 1,
+      "RowNumber": 2,
+      "NextSiblingRowNumber": 2,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "SumX: ScaLogOp DependOnCols(1)('Date'[DateKey]) Double DominantValue=BLANK",
+      "IndentedOperation": "    SumX: ScaLogOp DependOnCols(1)('Date'[DateKey]) Double DominantValue=BLANK",
+      "Level": 1,
+      "RowNumber": 3,
+      "NextSiblingRowNumber": 10,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Filter: RelLogOp DependOnCols(1)('Date'[DateKey]) 20-170 RequiredCols(1, 20, 22, 39)('Date'[DateKey], 'Internet Sales'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Internet Sales'[OrderDateKey], 'Internet Sales'[SalesAmount])",
+      "IndentedOperation": "        Filter: RelLogOp DependOnCols(1)('Date'[DateKey]) 20-170 RequiredCols(1, 20, 22, 39)('Date'[DateKey], 'Internet Sales'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Internet Sales'[OrderDateKey], 'Internet Sales'[SalesAmount])",
+      "Level": 2,
+      "RowNumber": 4,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "Scan_Vertipaq: RelLogOp DependOnCols()() 20-170 RequiredCols(20, 22, 39)('Internet Sales'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Internet Sales'[OrderDateKey], 'Internet Sales'[SalesAmount])",
+      "IndentedOperation": "            Scan_Vertipaq: RelLogOp DependOnCols()() 20-170 RequiredCols(20, 22, 39)('Internet Sales'[RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61], 'Internet Sales'[OrderDateKey], 'Internet Sales'[SalesAmount])",
+      "Level": 3,
+      "RowNumber": 5,
+      "NextSiblingRowNumber": 5,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "LessThanOrEqualTo: ScaLogOp DependOnCols(1, 22)('Date'[DateKey], 'Internet Sales'[OrderDateKey]) Boolean DominantValue=NONE",
+      "IndentedOperation": "            LessThanOrEqualTo: ScaLogOp DependOnCols(1, 22)('Date'[DateKey], 'Internet Sales'[OrderDateKey]) Boolean DominantValue=NONE",
+      "Level": 3,
+      "RowNumber": 6,
+      "NextSiblingRowNumber": 9,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "'Internet Sales'[OrderDateKey]: ScaLogOp DependOnCols(22)('Internet Sales'[OrderDateKey]) Integer DominantValue=NONE",
+      "IndentedOperation": "                'Internet Sales'[OrderDateKey]: ScaLogOp DependOnCols(22)('Internet Sales'[OrderDateKey]) Integer DominantValue=NONE",
+      "Level": 4,
+      "RowNumber": 7,
+      "NextSiblingRowNumber": 7,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "'Date'[DateKey]: ScaLogOp DependOnCols(1)('Date'[DateKey]) Integer DominantValue=NONE",
+      "IndentedOperation": "                'Date'[DateKey]: ScaLogOp DependOnCols(1)('Date'[DateKey]) Integer DominantValue=NONE",
+      "Level": 4,
+      "RowNumber": 8,
+      "NextSiblingRowNumber": 8,
+      "HighlightRow": false
+    },
+    {
+      "Operation": "'Internet Sales'[SalesAmount]: ScaLogOp DependOnCols(39)('Internet Sales'[SalesAmount]) Double DominantValue=NONE",
+      "IndentedOperation": "        'Internet Sales'[SalesAmount]: ScaLogOp DependOnCols(39)('Internet Sales'[SalesAmount]) Double DominantValue=NONE",
+      "Level": 2,
+      "RowNumber": 9,
+      "NextSiblingRowNumber": 10,
+      "HighlightRow": false
+    }
+  ],
+  "ActivityID": "0D5AB633-90D7-4F1F-BD00-565A45EFE9EE",
+  "CommandText": "evaluate\n            addcolumns(\n                        'Date',\n                        \"x\",\n                        sumx(\n                                    filter('Internet Sales', [OrderDateKey] <= 'Date'[DateKey]),\n                                    [SalesAmount]\n                        )\n            )",
+  "Parameters": null,
+  "StartDatetime": "2025-02-09T13:55:20.976667+00:00"
+}
