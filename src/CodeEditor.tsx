@@ -5,6 +5,7 @@ import React, {
   useState,
   useCallback,
   useEffect,
+  memo,
 } from 'react';
 import { CodeOnlyIcon, SplitViewIcon } from './icons';
 import CodeMirror, {
@@ -40,7 +41,7 @@ interface TopMenuProps {
   onParse: () => void;
 }
 // TopMenu component
-const TopMenu: React.FC<TopMenuProps> = ({ onParse }) => {
+const TopMenu = memo<TopMenuProps>(({ onParse }) => {
   return (
     <div id="topMenu">
       <div className="menu-group">
@@ -52,7 +53,6 @@ const TopMenu: React.FC<TopMenuProps> = ({ onParse }) => {
         >
           Parse Query Plan
         </span>
-
         <span
           className="menu-item"
           id="menu-issues"
@@ -64,9 +64,11 @@ const TopMenu: React.FC<TopMenuProps> = ({ onParse }) => {
       </div>
     </div>
   );
-};
+});
 
-const StatusBar: React.FC<StatusBarProps> = (props: StatusBarProps) => {
+TopMenu.displayName = 'TopMenu';
+
+const StatusBar = memo<StatusBarProps>((props) => {
   const { showSplitView, setShowSplitView, position, selection } = props;
   return (
     <div id="statusBar">
@@ -78,7 +80,7 @@ const StatusBar: React.FC<StatusBarProps> = (props: StatusBarProps) => {
             title="Show code view only."
             onClick={() => setShowSplitView(false)}
           >
-            <CodeOnlyIcon></CodeOnlyIcon>
+            <CodeOnlyIcon />
           </span>
         ) : (
           <span
@@ -87,7 +89,7 @@ const StatusBar: React.FC<StatusBarProps> = (props: StatusBarProps) => {
             title="Show split view."
             onClick={() => setShowSplitView(true)}
           >
-            <SplitViewIcon></SplitViewIcon>
+            <SplitViewIcon />
           </span>
         )}
       </div>
@@ -101,7 +103,9 @@ const StatusBar: React.FC<StatusBarProps> = (props: StatusBarProps) => {
       </div>
     </div>
   );
-};
+});
+
+StatusBar.displayName = 'StatusBar';
 
 const CodeEditor: React.FC<CodeEditorProps> = ({
   initialContent,
@@ -112,9 +116,22 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 }) => {
   const [position, setPosition] = useState({ line: 1, column: 1 });
   const [selection, setSelection] = useState(0);
-  const [currentContent, setCurrentContent] = useState(initialContent);
   const editorRef = useRef<ReactCodeMirrorRef>(null);
-  const [parser, setParser] = useState<nearley.Parser | null>(null);
+  const parserRef = useRef<nearley.Parser | null>(null);
+  const contentRef = useRef(initialContent);
+
+  // Initialize parser only once
+  useEffect(() => {
+    try {
+      const newParser = new nearley.Parser(
+        nearley.Grammar.fromCompiled(grammar as nearley.CompiledRules)
+      );
+      parserRef.current = newParser;
+      console.log('Parser initialized successfully');
+    } catch (err) {
+      console.error('Parser initialization error:', err);
+    }
+  }, []); // Empty dependency array ensures this runs only once
 
   // Update cursor position and selection
   const handleCursorActivity = useCallback((viewUpdate: ViewUpdate) => {
@@ -131,55 +148,62 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     setSelection(selectionSize);
   }, []);
 
-  useEffect(() => {
-    try {
-      // Handle the grammar import without accessing .default
-      // Create a new parser from the grammar
-      const newParser = new nearley.Parser(
-        nearley.Grammar.fromCompiled(grammar as nearley.CompiledRules)
-      );
-      setParser(newParser);
-      console.log('Parser initialized successfully');
-    } catch (err) {
-      console.error('Parser initialization error:', err);
-    }
-  }, []);
-
   const handleParse = useCallback(() => {
-    if (!parser) {
+    if (!parserRef.current) {
       console.error('Parser not initialized');
       return;
     }
 
     try {
-      // Handle the grammar import without accessing .default
-      // Create a new parser from the grammar
+      // Create a new parser instance for each parse operation
       const newParser = new nearley.Parser(
         nearley.Grammar.fromCompiled(grammar as nearley.CompiledRules)
       );
 
-      const contentWithNewline = currentContent + '\n';
-      console.log('Parsing content:', contentWithNewline);
+      const content = contentRef.current;
+      if (!content) {
+        console.error('No content to parse');
+        return;
+      }
 
+      const contentWithNewline = content + '\n';
+      console.log('Parsing content:', contentWithNewline);
       newParser.feed(contentWithNewline);
       const results = newParser.results[0];
       console.log('Parse results:', results);
 
-      onParseResult?.(results);
-      onChange?.(currentContent);
+      if (onParseResult) {
+        onParseResult(results);
+      }
     } catch (err) {
       console.error('Parse error:', err);
     }
-  }, [currentContent, onChange, onParseResult, parser]);
+  }, [onParseResult]);
 
   const handleChange = useCallback((value: string) => {
-    setCurrentContent(value);
-  }, []);
+    contentRef.current = value;
+    if (onChange) {
+      onChange(value);
+    }
+  }, [onChange]);
+
+  // Initialize CodeMirror extensions only once
+  const extensions = useRef([
+    keymap.of(defaultKeymap),
+    lineNumbers(),
+    EditorView.theme({
+      '&': {
+        fontSize: '12px',
+      },
+      '.cm-scroller': {
+        fontFamily: 'JetBrains Mono',
+      },
+    }),
+  ]);
 
   return (
     <div className="w-full" id="editor">
       <TopMenu onParse={handleParse} />
-
       <CodeMirror
         ref={editorRef}
         value={initialContent}
@@ -187,20 +211,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         theme={oneDark}
         onChange={handleChange}
         onUpdate={handleCursorActivity}
-        extensions={[
-          keymap.of(defaultKeymap),
-          lineNumbers(),
-          EditorView.theme({
-            '&': {
-              fontSize: '12px',
-            },
-            '.cm-scroller': {
-              fontFamily: 'JetBrains Mono',
-            },
-          }),
-        ]}
+        extensions={extensions.current}
       />
-
       <StatusBar
         showSplitView={showSplitView}
         setShowSplitView={setShowSplitView}
@@ -211,4 +223,4 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   );
 };
 
-export default CodeEditor;
+export default memo(CodeEditor);
