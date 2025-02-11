@@ -11,8 +11,7 @@ import {
 } from '@xyflow/react';
 import { DatabaseSchemaNode } from '@/components/database-schema-node';
 import Dagre from '@dagrejs/dagre';
-import { useCallback, useEffect, useRef } from 'react';
-//import { DevTools } from '@/components/devtools';
+import { useCallback, useEffect, useRef, useMemo } from 'react';
 
 interface LayoutOptions {
   direction: string;
@@ -23,8 +22,6 @@ const getLayoutedElements = (
   edges: Edge[],
   options: LayoutOptions = { direction: 'LR' }
 ) => {
-  console.log('getLayoutedElements - Input:', { nodes, edges, options });
-
   const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
   g.setGraph({ rankdir: options.direction });
 
@@ -38,7 +35,7 @@ const getLayoutedElements = (
 
   Dagre.layout(g);
 
-  const result = {
+  return {
     nodes: nodes.map((node) => {
       const nodeWithPosition = g.node(node.id);
       return {
@@ -51,9 +48,6 @@ const getLayoutedElements = (
     }),
     edges,
   };
-
-  console.log('getLayoutedElements - Output:', result);
-  return result;
 };
 
 const nodeTypes = {
@@ -72,24 +66,13 @@ const findParentNode = (
   currentNode: GrammarNodeData,
   previousNodes: GrammarNodeData[]
 ): GrammarNodeData | null => {
-  console.log('findParentNode - Input:', { currentNode, previousNodes });
-
-  // Filter nodes that come before the current node and have lower indentation
   const possibleParents = previousNodes.filter(
     (node) => node.indent < currentNode.indent
   );
-
-  if (possibleParents.length === 0) return null;
-
-  // Return the closest parent (last node with lower indentation)
-  const result = possibleParents[possibleParents.length - 1];
-  console.log('findParentNode - Output:', result);
-  return result;
+  return possibleParents.length === 0 ? null : possibleParents[possibleParents.length - 1];
 };
 
 const generateNodesAndEdges = (data: GrammarNodeData[]) => {
-  console.log('generateNodesAndEdges - Input data:', data);
-
   const nodes: Node[] = [];
   const edges: Edge[] = [];
   const processedNodes: GrammarNodeData[] = [];
@@ -127,7 +110,6 @@ const generateNodesAndEdges = (data: GrammarNodeData[]) => {
 
     nodes.push(node);
 
-    // Find parent node based on indentation and line number
     const parentNode = findParentNode(item, processedNodes);
     if (parentNode) {
       const parentOperatorLabel =
@@ -135,14 +117,13 @@ const generateNodesAndEdges = (data: GrammarNodeData[]) => {
           ? parentNode.operator
           : parentNode.operator.name;
 
-      const edge = {
+      edges.push({
         id: `edge-${parentNode.line}-${item.line}`,
         source: `node-${parentNode.line}`,
         target: `node-${item.line}`,
         sourceHandle: `source-${parentOperatorLabel}`,
         targetHandle: `target-${operatorLabel}`,
-      };
-      edges.push(edge);
+      });
     }
 
     processedNodes.push(item);
@@ -152,39 +133,31 @@ const generateNodesAndEdges = (data: GrammarNodeData[]) => {
 };
 
 function FlowContent({ data }: { data: GrammarNodeData[] }) {
-  console.log('FlowContent - Initial data:', data);
+  const initialElements = useMemo(() => {
+    const { nodes: generatedNodes, edges: generatedEdges } = generateNodesAndEdges(data);
+    return getLayoutedElements(generatedNodes, generatedEdges, { direction: 'LR' });
+  }, [data]);
 
-  const { nodes: generatedNodes, edges: generatedEdges } =
-    generateNodesAndEdges(data);
-  const { nodes: initialNodes, edges: initialEdges } = getLayoutedElements(
-    generatedNodes,
-    generatedEdges,
-    { direction: 'LR' }
-  );
-
-  console.log('FlowContent - Generated and laid out elements:', {
-    initialNodes,
-    initialEdges,
-  });
-
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialElements.nodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialElements.edges);
   const reactFlowInstance = useRef<ReactFlowInstance | null>(null);
 
   const onInit = useCallback((instance: ReactFlowInstance) => {
-    console.log('onInit - ReactFlow instance initialized');
     reactFlowInstance.current = instance;
     setTimeout(() => {
       instance.fitView({ duration: 200 });
     }, 100);
   }, []);
 
-  // Re-layout when data changes
+  // Only update layout when data changes, not on node movements
   useEffect(() => {
     if (data.length > 0) {
       const { nodes: newNodes, edges: newEdges } = generateNodesAndEdges(data);
-      const { nodes: layoutedNodes, edges: layoutedEdges } =
-        getLayoutedElements(newNodes, newEdges, { direction: 'LR' });
+      const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+        newNodes, 
+        newEdges, 
+        { direction: 'LR' }
+      );
       setNodes(layoutedNodes);
       setEdges(layoutedEdges);
     }
@@ -209,16 +182,14 @@ function FlowContent({ data }: { data: GrammarNodeData[] }) {
 }
 
 function FlowView({ jsonContent }: { jsonContent: any }) {
-  console.log('FlowView - Received jsonContent:', jsonContent);
-
-  // Convert the parsed grammar data to the expected format
-  const grammarData = Array.isArray(jsonContent) ? jsonContent : [];
-  console.log('FlowView - Converted grammarData:', grammarData);
+  const grammarData = useMemo(() => 
+    Array.isArray(jsonContent) ? jsonContent : [], 
+    [jsonContent]
+  );
 
   return (
     <ReactFlowProvider>
       <FlowContent data={grammarData} />
-      {/* <DevTools /> */}
     </ReactFlowProvider>
   );
 }
