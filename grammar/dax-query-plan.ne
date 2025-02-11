@@ -35,8 +35,11 @@ line -> indent operator _ %opType _ attributes nl {% function(d,l) { return { in
 
 indent -> %ws:* {% function(d) { return d[0] ? d[0].map(w => w.value).join('') : ''; } %}
 
-operator -> (complexIdentifier | text | identifier | columnRef) colon {% function(d) { 
+operator -> (filterOp | complexIdentifier | text | identifier | columnRef ) colon {% function(d) { 
     const op = d[0][0];
+    if (op.type === 'filterOp') {
+        return op;
+    }
     if (op.table && op.column) {
         return { type: 'columnRef', table: op.table, column: op.column };
     }
@@ -44,6 +47,15 @@ operator -> (complexIdentifier | text | identifier | columnRef) colon {% functio
         return op;
     }
     return op.value; 
+} %}
+
+filterOp -> columnRef _ equals _ value {% function(d) {
+    return { 
+        type: 'filterOp',
+        columnRef: d[0],
+        op: d[2].value,
+		filter: d[4][0].value,
+    };
 } %}
 
 complexIdentifier -> identifier %langle typeParam %rangle {% function(d) {

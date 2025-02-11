@@ -36,12 +36,16 @@ let ParserRules = [
     {"name": "indent$ebnf$1", "symbols": []},
     {"name": "indent$ebnf$1", "symbols": ["indent$ebnf$1", (lexer.has("ws") ? {type: "ws"} : ws)], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "indent", "symbols": ["indent$ebnf$1"], "postprocess": function(d) { return d[0] ? d[0].map(w => w.value).join('') : ''; }},
+    {"name": "operator$subexpression$1", "symbols": ["filterOp"]},
     {"name": "operator$subexpression$1", "symbols": ["complexIdentifier"]},
     {"name": "operator$subexpression$1", "symbols": ["text"]},
     {"name": "operator$subexpression$1", "symbols": ["identifier"]},
     {"name": "operator$subexpression$1", "symbols": ["columnRef"]},
     {"name": "operator", "symbols": ["operator$subexpression$1", "colon"], "postprocess":  function(d) { 
             const op = d[0][0];
+            if (op.type === 'filterOp') {
+                return op;
+            }
             if (op.table && op.column) {
                 return { type: 'columnRef', table: op.table, column: op.column };
             }
@@ -49,6 +53,14 @@ let ParserRules = [
                 return op;
             }
             return op.value; 
+        } },
+    {"name": "filterOp", "symbols": ["columnRef", "_", "equals", "_", "value"], "postprocess":  function(d) {
+            return { 
+                type: 'filterOp',
+                columnRef: d[0],
+                op: d[2].value,
+        		filter: d[4][0].value,
+            };
         } },
     {"name": "complexIdentifier", "symbols": ["identifier", (lexer.has("langle") ? {type: "langle"} : langle), "typeParam", (lexer.has("rangle") ? {type: "rangle"} : rangle)], "postprocess":  function(d) {
             return { 
