@@ -15,6 +15,7 @@ import CodeMirror, {
   oneDark,
   ReactCodeMirrorRef,
 } from '@uiw/react-codemirror';
+import { json } from '@codemirror/lang-json';
 import {ViewUpdate} from '@codemirror/view';
 import { defaultKeymap } from '@codemirror/commands';
 import grammar from '@/lib/grammar';
@@ -40,6 +41,16 @@ interface StatusBarProps {
 interface TopMenuProps {
   onParse: () => void;
 }
+
+interface QueryPlanRow {
+  IndentedOperation: string;
+}
+
+interface QueryPlan {
+  PhysicalQueryPlanRows: QueryPlanRow[];
+  LogicalQueryPlanRows: QueryPlanRow[];
+}
+
 // TopMenu component
 const TopMenu = memo<TopMenuProps>(({ onParse }) => {
   return (
@@ -107,6 +118,21 @@ const StatusBar = memo<StatusBarProps>((props) => {
 
 StatusBar.displayName = 'StatusBar';
 
+const isJsonString = (str: string): boolean => {
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+const extractOperationsFromJson = (jsonData: QueryPlan): string => {
+  const physicalOps = jsonData.PhysicalQueryPlanRows?.map(row => row.IndentedOperation) || [];
+  const logicalOps = jsonData.LogicalQueryPlanRows?.map(row => row.IndentedOperation) || [];
+  return [...physicalOps, ...logicalOps].join('\n');
+};
+
 const CodeEditor: React.FC<CodeEditorProps> = ({
   initialContent,
   onChange,
@@ -166,7 +192,14 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         return;
       }
 
-      const contentWithNewline = content + '\n';
+      // Check if content is JSON
+      let contentToParse = content;
+      if (isJsonString(content)) {
+        const jsonData = JSON.parse(content) as QueryPlan;
+        contentToParse = extractOperationsFromJson(jsonData);
+      }
+
+      const contentWithNewline = contentToParse + '\n';
       console.log('Parsing content:', contentWithNewline);
       newParser.feed(contentWithNewline);
       const results = newParser.results[0];
@@ -187,10 +220,11 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     }
   }, [onChange]);
 
-  // Initialize CodeMirror extensions only once
+  // Initialize CodeMirror extensions
   const extensions = useRef([
     keymap.of(defaultKeymap),
     lineNumbers(),
+    json(),
     EditorView.theme({
       '&': {
         fontSize: '12px',
