@@ -8,10 +8,17 @@ import {
   Controls,
   ReactFlowInstance,
   ReactFlowProvider,
+  // MiniMap,
 } from '@xyflow/react';
 import { DatabaseSchemaNode } from '@/components/database-schema-node';
+import { ScaLogOpNode } from '@/components/sca-log-op-node';
+import { RelLogOpNode } from '@/components/rel-log-op-node';
+import { SpoolPhyOpNode } from '@/components/spool-phy-op-node';
+import { IterPhyOpNode } from '@/components/iter-phy-op-node';
+import { LookupPhyOpNode } from '@/components/lookup-phy-op-node';
 import Dagre from '@dagrejs/dagre';
 import { useCallback, useEffect, useRef, useMemo } from 'react';
+import { cleanTableName } from '@/lib/utils';
 
 interface LayoutOptions {
   direction: string;
@@ -52,12 +59,24 @@ const getLayoutedElements = (
 
 const nodeTypes = {
   databaseSchema: DatabaseSchemaNode,
+  scaLogOp: ScaLogOpNode,
+  relLogOp: RelLogOpNode,
+  spoolPhyOp: SpoolPhyOpNode,
+  iterPhyOp: IterPhyOpNode,
+  lookupPhyOp: LookupPhyOpNode,
 };
 
 interface GrammarNodeData {
   indent: number;
   line: number;
-  operator: string | { type: string; [key: string]: any };
+  operator: string | { 
+    type: string; 
+    name?: string; 
+    param?: any;
+    columnRef?: { table: string; column: string };
+    op?: string;
+    filter?: string;
+  };
   type: string;
   attributes: any[];
 }
@@ -72,6 +91,33 @@ const findParentNode = (
   return possibleParents.length === 0 ? null : possibleParents[possibleParents.length - 1];
 };
 
+const getOperatorLabel = (operator: any) => {
+  if (typeof operator === 'string') {
+    return operator;
+  }
+
+  if (operator.type === 'filterOp') {
+    const table = cleanTableName(operator.columnRef.table);
+    return `${table}[${operator.columnRef.column}] ${operator.op} ${operator.filter}`;
+  }
+
+  if (operator.type === 'columnRef') {
+    const table = cleanTableName(operator.table);
+    return `${table}[${operator.column}]`;
+  }
+
+  if (operator.type === 'complexIdentifier') {
+    const paramStr = operator.param ? 
+      (typeof operator.param === 'string' ? operator.param :
+       operator.param.type === 'complexIdentifier' ? `${operator.param.name}<${operator.param.param || ''}>` :
+       operator.param.table ? `${operator.param.table}[${operator.param.column}]` : '') 
+      : '';
+    return `${operator.name}<${paramStr}>`;
+  }
+
+  return operator.name || '';
+};
+
 const generateNodesAndEdges = (data: GrammarNodeData[]) => {
   const nodes: Node[] = [];
   const edges: Edge[] = [];
@@ -79,43 +125,94 @@ const generateNodesAndEdges = (data: GrammarNodeData[]) => {
 
   data.forEach((item) => {
     const nodeId = `node-${item.line}`;
-    const operatorLabel =
-      typeof item.operator === 'string'
-        ? item.operator
-        : item.operator.name ||
-          `${item.operator.table}[${item.operator.column}]`;
+    const operatorLabel = getOperatorLabel(item.operator);
+
+    let nodeType = 'databaseSchema';
+    let nodeData: any = {
+      label: operatorLabel,
+      rowNumber: item.line,
+    };
+
+    switch (item.type) {
+      case 'SpoolPhyOp':
+        nodeType = 'spoolPhyOp';
+        nodeData = {
+          label: operatorLabel,
+          rowNumber: item.line,
+          records: item.attributes.find(attr => attr.type === 'Records')?.value,
+          keyCols: item.attributes.find(attr => attr.type === 'KeyCols')?.value,
+          valueCols: item.attributes.find(attr => attr.type === 'ValueCols')?.value,
+        };
+        break;
+
+      case 'IterPhyOp':
+        nodeType = 'iterPhyOp';
+        nodeData = {
+          label: operatorLabel,
+          rowNumber: item.line,
+          logOp: item.attributes.find(attr => attr.type === 'LogOp')?.value,
+          records: item.attributes.find(attr => attr.type === 'Records')?.value,
+          keyCols: item.attributes.find(attr => attr.type === 'KeyCols')?.value,
+          valueCols: item.attributes.find(attr => attr.type === 'ValueCols')?.value,
+          fieldCols: item.attributes.find(attr => attr.type === 'FieldCols')?.value,
+          lookupCols: item.attributes.find(attr => attr.type === 'LookupCols'),
+          iterCols: item.attributes.find(attr => attr.type === 'IterCols'),
+        };
+        break;
+
+      case 'LookupPhyOp':
+        nodeType = 'lookupPhyOp';
+        nodeData = {
+          label: operatorLabel,
+          rowNumber: item.line,
+          logOp: item.attributes.find(attr => attr.type === 'LogOp')?.value,
+          records: item.attributes.find(attr => attr.type === 'Records')?.value,
+          keyCols: item.attributes.find(attr => attr.type === 'KeyCols')?.value,
+          valueCols: item.attributes.find(attr => attr.type === 'ValueCols')?.value,
+          fieldCols: item.attributes.find(attr => attr.type === 'FieldCols')?.value,
+          dataType: item.attributes.find(attr => attr.dataType)?.dataType,
+          dominantValue: item.attributes.find(attr => attr.type === 'DominantValue')?.value,
+          lookupCols: item.attributes.find(attr => attr.type === 'LookupCols'),
+        };
+        break;
+
+      case 'ScaLogOp':
+        nodeType = 'scaLogOp';
+        nodeData = {
+          label: operatorLabel,
+          rowNumber: item.line,
+          dominantValue: item.attributes.find(attr => attr.type === 'DominantValue')?.value,
+          dataType: item.attributes.find(attr => attr.dataType)?.dataType,
+          dependOnCols: item.attributes.find(attr => attr.type === 'DependOnCols'),
+        };
+        break;
+
+      case 'RelLogOp':
+        nodeType = 'relLogOp';
+        nodeData = {
+          label: operatorLabel,
+          rowNumber: item.line,
+          range: item.attributes.find(attr => attr.type === 'LineRange'),
+          dependOnCols: item.attributes.find(attr => attr.type === 'DependOnCols'),
+          requiredCols: item.attributes.find(attr => attr.type === 'RequiredCols'),
+        };
+        break;
+    }
 
     const node = {
       id: nodeId,
-      type: 'databaseSchema',
+      type: nodeType,
       position: { x: 0, y: 0 },
       width: 300,
       height: 120,
-      data: {
-        label: operatorLabel,
-        schema: [
-          {
-            title: '',
-            type: item.type,
-            value: '',
-          },
-          ...item.attributes.map((attr, index) => ({
-            title: `${index}`,
-            type: `${attr.type}`,
-            value: `${attr.value || ''}`,
-          })),
-        ],
-      },
+      data: nodeData,
     };
 
     nodes.push(node);
 
     const parentNode = findParentNode(item, processedNodes);
     if (parentNode) {
-      const parentOperatorLabel =
-        typeof parentNode.operator === 'string'
-          ? parentNode.operator
-          : parentNode.operator.name;
+      const parentOperatorLabel = getOperatorLabel(parentNode.operator);
 
       edges.push({
         id: `edge-${parentNode.line}-${item.line}`,
@@ -149,7 +246,6 @@ function FlowContent({ data }: { data: GrammarNodeData[] }) {
     }, 100);
   }, []);
 
-  // Only update layout when data changes, not on node movements
   useEffect(() => {
     if (data.length > 0) {
       const { nodes: newNodes, edges: newEdges } = generateNodesAndEdges(data);
@@ -190,6 +286,7 @@ function FlowView({ jsonContent }: { jsonContent: any }) {
   return (
     <ReactFlowProvider>
       <FlowContent data={grammarData} />
+      {/* <MiniMap  zoomable pannable/> */}
     </ReactFlowProvider>
   );
 }
