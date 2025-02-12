@@ -8,7 +8,7 @@ import {
   Controls,
   ReactFlowInstance,
   ReactFlowProvider,
-  MiniMap,
+  // MiniMap,
 } from '@xyflow/react';
 import { DatabaseSchemaNode } from '@/components/database-schema-node';
 import { ScaLogOpNode } from '@/components/sca-log-op-node';
@@ -286,7 +286,7 @@ function FlowView({ jsonContent }: { jsonContent: any }) {
   return (
     <ReactFlowProvider>
       <FlowContent data={grammarData} />
-      <MiniMap  zoomable pannable/>
+      {/* <MiniMap  zoomable pannable/> */}
     </ReactFlowProvider>
   );
 }
