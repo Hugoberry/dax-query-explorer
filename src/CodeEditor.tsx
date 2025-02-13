@@ -7,6 +7,7 @@ import React, {
   useEffect,
   memo,
 } from 'react';
+import { useParams } from 'react-router-dom';
 import { CodeOnlyIcon, SplitViewIcon } from './icons';
 import CodeMirror, {
   EditorView,
@@ -21,11 +22,13 @@ import { defaultKeymap } from '@codemirror/commands';
 import grammar from '@/lib/grammar';
 import nearley from 'nearley';
 import { FEEDBACK_URL } from './const';
+import { getQueryPlan } from '@/lib/supabase';
 
 interface CodeEditorProps {
   initialContent: string;
   onChange?: (value: string) => void;
   onParseResult?: (result: any) => void;
+  onContentChange?: (content: string) => void;
   height?: string;
   showSplitView: boolean;
   setShowSplitView: Dispatch<SetStateAction<boolean>>;
@@ -137,14 +140,43 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   initialContent,
   onChange,
   onParseResult,
+  onContentChange,
   showSplitView,
   setShowSplitView,
 }) => {
   const [position, setPosition] = useState({ line: 1, column: 1 });
   const [selection, setSelection] = useState(0);
+  const [content, setContent] = useState(initialContent);
   const editorRef = useRef<ReactCodeMirrorRef>(null);
   const parserRef = useRef<nearley.Parser | null>(null);
-  const contentRef = useRef(initialContent);
+  const { shortCode } = useParams<{ shortCode: string }>();
+
+  // Load shared query plan if shortCode is present
+  useEffect(() => {
+    if (shortCode) {
+      const loadSharedPlan = async () => {
+        try {
+          const queryPlan = await getQueryPlan(shortCode);
+          if (typeof queryPlan === 'string') {
+            setContent(queryPlan);
+            if (onContentChange) {
+              onContentChange(queryPlan);
+            }
+          } else {
+            const stringifiedPlan = JSON.stringify(queryPlan, null, 2);
+            setContent(stringifiedPlan);
+            if (onContentChange) {
+              onContentChange(stringifiedPlan);
+            }
+          }
+        } catch (error) {
+          console.error('Error loading shared plan:', error);
+          // You might want to show an error message to the user here
+        }
+      };
+      loadSharedPlan();
+    }
+  }, [shortCode, onContentChange]);
 
   // Initialize parser only once
   useEffect(() => {
@@ -186,7 +218,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         nearley.Grammar.fromCompiled(grammar as nearley.CompiledRules)
       );
 
-      const content = contentRef.current;
       if (!content) {
         console.error('No content to parse');
         return;
@@ -211,14 +242,17 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     } catch (err) {
       console.error('Parse error:', err);
     }
-  }, [onParseResult]);
+  }, [content, onParseResult]);
 
   const handleChange = useCallback((value: string) => {
-    contentRef.current = value;
+    setContent(value);
     if (onChange) {
       onChange(value);
     }
-  }, [onChange]);
+    if (onContentChange) {
+      onContentChange(value);
+    }
+  }, [onChange, onContentChange]);
 
   // Initialize CodeMirror extensions
   const extensions = useRef([
@@ -240,7 +274,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       <TopMenu onParse={handleParse} />
       <CodeMirror
         ref={editorRef}
-        value={initialContent}
+        value={content}
         height="100%"
         theme={oneDark}
         onChange={handleChange}
