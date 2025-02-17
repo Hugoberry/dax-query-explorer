@@ -1,7 +1,7 @@
 import { Node, NodeProps, Position } from '@xyflow/react';
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { BaseNode } from '@/components/base-node';
-import { LabeledHandle } from '@/components/labeled-handle';
+import { BaseHandle } from '@/components/base-handle';
 import { cleanTableName } from '@/lib/utils';
 
 interface ColumnRef {
@@ -36,7 +36,7 @@ export function RelLogOpNode({ data, selected }: NodeProps<RelLogOpNode>) {
       selected={selected}
     >
       <h2 className="rounded-tl-md rounded-tr-md bg-green-100 text-center text-sm text-muted-foreground">
-        <LabeledHandle
+        <BaseHandle
           id={`target-${data.label}`}
           title=""
           type="target"
@@ -51,7 +51,7 @@ export function RelLogOpNode({ data, selected }: NodeProps<RelLogOpNode>) {
           </div>
           <span className="flex-shrink-0 px-1.5">#{data.rowNumber}</span>
         </div>
-        <LabeledHandle
+        <BaseHandle
           id={`source-${data.label}`}
           title=""
           type="source"

@@ -1,8 +1,8 @@
 import { Node, NodeProps, Position } from '@xyflow/react';
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { BaseNode } from '@/components/base-node';
-import { LabeledHandle } from '@/components/labeled-handle';
 import { cleanTableName } from '@/lib/utils';
+import { BaseHandle } from './base-handle';
 
 interface ColumnRef {
   table: string;
@@ -36,7 +36,7 @@ export function ScaLogOpNode({ data, selected }: NodeProps<ScaLogOpNode>) {
       selected={selected}
     >
       <h2 className="rounded-tl-md rounded-tr-md bg-blue-100 text-center text-sm text-muted-foreground">
-        <LabeledHandle
+        <BaseHandle
           id={`target-${label}`}
           title=""
           type="target"
@@ -51,7 +51,7 @@ export function ScaLogOpNode({ data, selected }: NodeProps<ScaLogOpNode>) {
           </div>
           <span className="flex-shrink-0 px-1.5">#{data.rowNumber}</span>
         </div>
-        <LabeledHandle
+        <BaseHandle
           id={`source-${label}`}
           title=""
           type="source"

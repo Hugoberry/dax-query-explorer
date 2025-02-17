@@ -1,6 +1,6 @@
 import { Node, NodeProps, Position } from '@xyflow/react';
 import { BaseNode } from '@/components/base-node';
-import { LabeledHandle } from '@/components/labeled-handle';
+import { BaseHandle } from '@/components/base-handle';
 
 type SpoolPhyOpNode = Node<{
   label: string | { type: string; name: string; param: any };
@@ -25,7 +25,7 @@ export function SpoolPhyOpNode({ data, selected }: NodeProps<SpoolPhyOpNode>) {
       selected={selected}
     >
       <h2 className="rounded-tl-md rounded-tr-md bg-purple-100 text-sm text-muted-foreground">
-        <LabeledHandle
+        <BaseHandle
           id={`target-${label}`}
           title=""
           type="target"
@@ -40,7 +40,7 @@ export function SpoolPhyOpNode({ data, selected }: NodeProps<SpoolPhyOpNode>) {
           </div>
           <span className="flex-shrink-0 px-1.5">#{data.rowNumber}</span>
         </div>
-        <LabeledHandle
+        <BaseHandle
           id={`source-${label}`}
           title=""
           type="source"
