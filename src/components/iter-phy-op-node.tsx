@@ -3,6 +3,13 @@ import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { BaseNode } from '@/components/base-node';
 import { BaseHandle } from '@/components/base-handle';
 import { cleanTableName } from '@/lib/utils';
+import { useState } from 'react';
+import { 
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { ChevronDown, ChevronRight } from 'lucide-react';
 
 interface ColumnRef {
   table: string;
@@ -34,6 +41,9 @@ type IterPhyOpNode = Node<{
 }>;
 
 export function IterPhyOpNode({ data, selected }: NodeProps<IterPhyOpNode>) {
+  const [openLookup, setOpenLookup] = useState(false);
+  const [openIter, setOpenIter] = useState(false);
+
   const label = typeof data.label === 'string'
     ? data.label
     : `${data.label.name} <${data.label.param?.name || ''}>`;
@@ -73,7 +83,7 @@ export function IterPhyOpNode({ data, selected }: NodeProps<IterPhyOpNode>) {
       </h2>
       <div className="p-2">
         {data.logOp && (
-          <div className="text-mg mb-1 font-bold text-center">
+          <div className="text-md mb-1 font-bold text-center">
             {data.logOp}
           </div>
         )}
@@ -101,40 +111,60 @@ export function IterPhyOpNode({ data, selected }: NodeProps<IterPhyOpNode>) {
             )}
           </div>
         )}
-        {data.lookupCols && data.lookupCols.indices.length > 0 && (
-          <div className="mb-2">
-            <div className="text-xs font-semibold mb-1">Lookup Cols:</div>
-            <table className="w-full text-xs">
-              <TableBody>
-                {data.lookupCols.indices.map((index, i) => (
-                  <TableRow key={index}>
-                    <TableCell className="py-0 pl-0">{index}</TableCell>
-                    <TableCell className="py-0">
-                      {cleanTableName(data.lookupCols?.refs[i]?.table)}[{data.lookupCols?.refs[i]?.column}]
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </table>
-          </div>
-        )}
-        {data.iterCols && data.iterCols.indices.length > 0 && (
-          <div>
-            <div className="text-xs font-semibold mb-1">Iter Cols:</div>
-            <table className="w-full text-xs">
-              <TableBody>
-                {data.iterCols.indices.map((index, i) => (
-                  <TableRow key={index}>
-                    <TableCell className="py-0 pl-0">{index}</TableCell>
-                    <TableCell className="py-0">
-                      {cleanTableName(data.iterCols?.refs[i]?.table)}[{data.iterCols?.refs[i]?.column}]
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </table>
-          </div>
-        )}
+        <div className="space-y-1">
+          {data.iterCols && data.iterCols.indices.length > 0 && (
+            <Collapsible
+              open={openIter}
+              onOpenChange={setOpenIter}
+              className="w-full"
+            >
+              <CollapsibleTrigger className="w-full flex items-center bg-yellow-200/50 hover:bg-yellow-200 text-xs text-left px-2 py-1 rounded-sm border-0 [&:not([data-state=open])]:rounded-b-sm">
+                {openIter ? <ChevronDown className="h-3 w-3 shrink-0" /> : <ChevronRight className="h-3 w-3 shrink-0" />}
+                <span className="ml-1 font-semibold">Iter Cols</span>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="bg-yellow-50 px-2 py-1 rounded-b-sm">
+                <table className="w-full text-xs">
+                  <TableBody>
+                    {data.iterCols.indices.map((index, i) => (
+                      <TableRow key={index}>
+                        <TableCell className="py-0 pl-0">{index}</TableCell>
+                        <TableCell className="py-0">
+                          {cleanTableName(data.iterCols?.refs[i]?.table)}[{data.iterCols?.refs[i]?.column}]
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </table>
+              </CollapsibleContent>
+            </Collapsible>
+          )}
+          {data.lookupCols && data.lookupCols.indices.length > 0 && (
+            <Collapsible
+              open={openLookup}
+              onOpenChange={setOpenLookup}
+              className="w-full"
+            >
+              <CollapsibleTrigger className="w-full flex items-center bg-yellow-200/50 hover:bg-yellow-200 text-xs text-left px-2 py-1 rounded-sm border-0 [&:not([data-state=open])]:rounded-b-sm">
+                {openLookup ? <ChevronDown className="h-3 w-3 shrink-0" /> : <ChevronRight className="h-3 w-3 shrink-0" />}
+                <span className="ml-1 font-semibold">Lookup Cols</span>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="bg-yellow-50 px-2 py-1 rounded-b-sm">
+                <table className="w-full text-xs">
+                  <TableBody>
+                    {data.lookupCols.indices.map((index, i) => (
+                      <TableRow key={index}>
+                        <TableCell className="py-0 pl-0">{index}</TableCell>
+                        <TableCell className="py-0">
+                          {cleanTableName(data.lookupCols?.refs[i]?.table)}[{data.lookupCols?.refs[i]?.column}]
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </table>
+              </CollapsibleContent>
+            </Collapsible>
+          )}
+        </div>
       </div>
     </BaseNode>
   );

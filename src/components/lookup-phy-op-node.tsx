@@ -3,6 +3,13 @@ import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { BaseNode } from '@/components/base-node';
 import { BaseHandle } from '@/components/base-handle';
 import { cleanTableName } from '@/lib/utils';
+import { useState } from 'react';
+import { 
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { ChevronDown, ChevronRight } from 'lucide-react';
 
 interface ColumnRef {
   table: string;
@@ -29,6 +36,8 @@ type LookupPhyOpNode = Node<{
 }>;
 
 export function LookupPhyOpNode({ data, selected }: NodeProps<LookupPhyOpNode>) {
+  const [openLookup, setOpenLookup] = useState(false);
+
   const label = typeof data.label === 'string'
     ? data.label
     : `${data.label.name} <${data.label.param?.name || ''}>`;
@@ -68,7 +77,7 @@ export function LookupPhyOpNode({ data, selected }: NodeProps<LookupPhyOpNode>) 
       </h2>
       <div className="p-2">
         {data.logOp && (
-          <div className="text-xs mb-2 font-bold text-center">
+          <div className="text-md mb-2 font-bold text-center">
             {data.logOp}
           </div>
         )}
@@ -109,21 +118,30 @@ export function LookupPhyOpNode({ data, selected }: NodeProps<LookupPhyOpNode>) 
           )}
         </div>
         {data.lookupCols && data.lookupCols.indices.length > 0 && (
-          <div>
-            <div className="text-xs font-semibold mb-1">Lookup Cols:</div>
-            <table className="w-full text-xs">
-              <TableBody>
-                {data.lookupCols.indices.map((index, i) => (
-                  <TableRow key={index}>
-                    <TableCell className="py-0 pl-0">{index}</TableCell>
-                    <TableCell className="py-0">
-                      {cleanTableName(data.lookupCols?.refs[i]?.table)}[{data.lookupCols?.refs[i]?.column}]
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </table>
-          </div>
+          <Collapsible
+            open={openLookup}
+            onOpenChange={setOpenLookup}
+            className="w-full"
+          >
+            <CollapsibleTrigger className="w-full flex items-center bg-orange-200/50 hover:bg-orange-200 text-xs text-left px-2 py-1 rounded-sm border-0 [&:not([data-state=open])]:rounded-b-sm">
+              {openLookup ? <ChevronDown className="h-3 w-3 shrink-0" /> : <ChevronRight className="h-3 w-3 shrink-0" />}
+              <span className="ml-1 font-semibold">Lookup Cols</span>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="bg-orange-50 px-2 py-1 rounded-b-sm">
+              <table className="w-full text-xs">
+                <TableBody>
+                  {data.lookupCols.indices.map((index, i) => (
+                    <TableRow key={index}>
+                      <TableCell className="py-0 pl-0">{index}</TableCell>
+                      <TableCell className="py-0">
+                        {cleanTableName(data.lookupCols?.refs[i]?.table)}[{data.lookupCols?.refs[i]?.column}]
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </table>
+            </CollapsibleContent>
+          </Collapsible>
         )}
       </div>
     </BaseNode>
