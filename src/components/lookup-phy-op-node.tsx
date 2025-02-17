@@ -31,7 +31,12 @@ type LookupPhyOpNode = Node<{
 export function LookupPhyOpNode({ data, selected }: NodeProps<LookupPhyOpNode>) {
   const label = typeof data.label === 'string'
     ? data.label
-    : `${data.label.name}<${data.label.param?.name || ''}>`;
+    : `${data.label.name} <${data.label.param?.name || ''}>`;
+
+  const hasStats = data.records !== undefined || 
+    data.keyCols !== undefined || 
+    data.valueCols !== undefined || 
+    data.fieldCols !== undefined;
 
   return (
     <BaseNode 
@@ -53,7 +58,7 @@ export function LookupPhyOpNode({ data, selected }: NodeProps<LookupPhyOpNode>) 
             <div className="break-words">{label}</div>
           </div>
           <span className="flex-shrink-0 px-1.5">#{data.rowNumber}</span>
-        </div> 
+        </div>
         <LabeledHandle
           id={`source-${label}`}
           title=""
@@ -63,46 +68,46 @@ export function LookupPhyOpNode({ data, selected }: NodeProps<LookupPhyOpNode>) 
       </h2>
       <div className="p-2">
         {data.logOp && (
-          <div className="text-xs mb-2 font-bold">
-            LogOp: {data.logOp}
+          <div className="text-xs mb-2 font-bold text-center">
+            {data.logOp}
           </div>
         )}
-        {data.records !== undefined && (
-          <div className="text-xs mb-1">
-            <span className="font-semibold">Records: </span>
-            {data.records}
-          </div>
-        )}
-        {data.keyCols !== undefined && (
-          <div className="text-xs mb-1">
-            <span className="font-semibold">Key Cols: </span>
-            {data.keyCols}
-          </div>
-        )}
-        {data.valueCols !== undefined && (
-          <div className="text-xs mb-1">
-            <span className="font-semibold">Value Cols: </span>
-            {data.valueCols}
-          </div>
-        )}
-        {data.fieldCols !== undefined && (
-          <div className="text-xs mb-1">
-            <span className="font-semibold">Field Cols: </span>
-            {data.fieldCols}
-          </div>
-        )}
-        {data.dataType && (
-          <div className="text-xs mb-1">
-            <span className="font-semibold">Data Type: </span>
-            {data.dataType}
-          </div>
-        )}
-        {data.dominantValue && (
-          <div className="text-xs mb-2">
-            <span className="font-semibold">Dominant Value: </span>
-            {data.dominantValue}
-          </div>
-        )}
+        <div className="flex flex-wrap gap-2 items-center mb-2">
+          {hasStats && (
+            <div className="flex gap-2 text-xs">
+              {data.records !== undefined && (
+                <div className="bg-orange-100 px-1.5 py-0.5 rounded">
+                  <span className="font-medium">Records:</span> {data.records.toLocaleString()}
+                </div>
+              )}
+              {data.keyCols !== undefined && (
+                <div className="bg-orange-100 px-1.5 py-0.5 rounded">
+                  <span className="font-medium">K:</span> {data.keyCols}
+                </div>
+              )}
+              {data.valueCols !== undefined && (
+                <div className="bg-orange-100 px-1.5 py-0.5 rounded">
+                  <span className="font-medium">V:</span> {data.valueCols}
+                </div>
+              )}
+              {data.fieldCols !== undefined && (
+                <div className="bg-orange-100 px-1.5 py-0.5 rounded">
+                  <span className="font-medium">F:</span> {data.fieldCols}
+                </div>
+              )}
+            </div>
+          )}
+          {data.dataType && (
+            <div className="bg-orange-200 px-1.5 py-0.5 rounded text-xs">
+              {data.dataType}
+            </div>
+          )}
+          {data.dominantValue && (
+            <div className="bg-orange-200 px-1.5 py-0.5 rounded text-xs">
+              {data.dominantValue}
+            </div>
+          )}
+        </div>
         {data.lookupCols && data.lookupCols.indices.length > 0 && (
           <div>
             <div className="text-xs font-semibold mb-1">Lookup Cols:</div>

@@ -36,7 +36,12 @@ type IterPhyOpNode = Node<{
 export function IterPhyOpNode({ data, selected }: NodeProps<IterPhyOpNode>) {
   const label = typeof data.label === 'string'
     ? data.label
-    : `${data.label.name}<${data.label.param?.name || ''}>`;
+    : `${data.label.name} <${data.label.param?.name || ''}>`;
+
+  const hasStats = data.records !== undefined || 
+    data.keyCols !== undefined || 
+    data.valueCols !== undefined || 
+    data.fieldCols !== undefined;
 
   return (
     <BaseNode 
@@ -52,7 +57,7 @@ export function IterPhyOpNode({ data, selected }: NodeProps<IterPhyOpNode>) {
         />
         <div className="flex min-w-0 items-start p-1">
           <span className="flex-shrink-0 bg-yellow-200 px-1.5 py-0.5 rounded text-xs mr-2">
-          IterPhyOp
+            IterPhyOp
           </span>
           <div className="min-w-0 flex-1 px-1">
             <div className="break-words">{label}</div>
@@ -68,32 +73,32 @@ export function IterPhyOpNode({ data, selected }: NodeProps<IterPhyOpNode>) {
       </h2>
       <div className="p-2">
         {data.logOp && (
-          <div className="text-xs mb-2 font-bold">
-            LogOp: {data.logOp}
+          <div className="text-mg mb-1 font-bold text-center">
+            {data.logOp}
           </div>
         )}
-        {data.records !== undefined && (
-          <div className="text-xs mb-1">
-            <span className="font-semibold">Records: </span>
-            {data.records}
-          </div>
-        )}
-        {data.keyCols !== undefined && (
-          <div className="text-xs mb-1">
-            <span className="font-semibold">Key Cols: </span>
-            {data.keyCols}
-          </div>
-        )}
-        {data.valueCols !== undefined && (
-          <div className="text-xs mb-1">
-            <span className="font-semibold">Value Cols: </span>
-            {data.valueCols}
-          </div>
-        )}
-        {data.fieldCols !== undefined && (
-          <div className="text-xs mb-2">
-            <span className="font-semibold">Field Cols: </span>
-            {data.fieldCols}
+        {hasStats && (
+          <div className="flex gap-2 text-xs mb-2 flex-wrap">
+            {data.records !== undefined && (
+              <div className="bg-yellow-100 px-1.5 py-0.5 rounded">
+                <span className="font-medium">Records:</span> {data.records.toLocaleString()}
+              </div>
+            )}
+            {data.keyCols !== undefined && (
+              <div className="bg-yellow-100 px-1.5 py-0.5 rounded">
+                <span className="font-medium">K:</span> {data.keyCols}
+              </div>
+            )}
+            {data.valueCols !== undefined && (
+              <div className="bg-yellow-100 px-1.5 py-0.5 rounded">
+                <span className="font-medium">V:</span> {data.valueCols}
+              </div>
+            )}
+            {data.fieldCols !== undefined && (
+              <div className="bg-yellow-100 px-1.5 py-0.5 rounded">
+                <span className="font-medium">F:</span> {data.fieldCols}
+              </div>
+            )}
           </div>
         )}
         {data.lookupCols && data.lookupCols.indices.length > 0 && (

@@ -28,6 +28,8 @@ export function ScaLogOpNode({ data, selected }: NodeProps<ScaLogOpNode>) {
     ? data.label 
     : `${cleanTableName(data.label.table)}[${data.label.column}]`;
 
+  const hasTags = data.dataType || data.dominantValue;
+
   return (
     <BaseNode 
       className="p-0 bg-blue-50" 
@@ -42,7 +44,7 @@ export function ScaLogOpNode({ data, selected }: NodeProps<ScaLogOpNode>) {
         />
         <div className="flex min-w-0 items-start p-1">
           <span className="flex-shrink-0 bg-blue-200 px-1.5 py-0.5 rounded text-xs mr-2">
-          ScaLogOp
+            ScaLogOp
           </span>
           <div className="min-w-0 flex-1 px-1">
             <div className="break-words">{label}</div>
@@ -57,16 +59,18 @@ export function ScaLogOpNode({ data, selected }: NodeProps<ScaLogOpNode>) {
         />
       </h2>
       <div className="p-2">
-        {data.dominantValue && (
-          <div className="text-xs mb-1">
-            <span className="font-semibold">Dominant Value: </span>
-            {data.dominantValue}
-          </div>
-        )}
-        {data.dataType && (
-          <div className="text-xs mb-2">
-            <span className="font-semibold">Data Type: </span>
-            {data.dataType}
+        {hasTags && (
+          <div className="flex flex-wrap gap-2 items-center mb-2">
+            {data.dataType && (
+              <div className="bg-blue-200 px-1.5 py-0.5 rounded text-xs">
+                {data.dataType}
+              </div>
+            )}
+            {data.dominantValue && (
+              <div className="bg-blue-200 px-1.5 py-0.5 rounded text-xs">
+                {data.dominantValue}
+              </div>
+            )}
           </div>
         )}
         {data.dependOnCols && data.dependOnCols.indices.length > 0 && (

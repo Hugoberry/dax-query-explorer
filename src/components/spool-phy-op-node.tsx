@@ -13,7 +13,11 @@ type SpoolPhyOpNode = Node<{
 export function SpoolPhyOpNode({ data, selected }: NodeProps<SpoolPhyOpNode>) {
   const label = typeof data.label === 'string'
     ? data.label
-    : `${data.label.name}<${data.label.param?.name || ''}>`;
+    : `${data.label.name} <${data.label.param?.name || ''}>`;
+
+  const hasStats = data.records !== undefined || 
+    data.keyCols !== undefined || 
+    data.valueCols !== undefined;
 
   return (
     <BaseNode 
@@ -44,22 +48,23 @@ export function SpoolPhyOpNode({ data, selected }: NodeProps<SpoolPhyOpNode>) {
         />
       </h2>
       <div className="p-2">
-        {data.records !== undefined && (
-          <div className="text-xs mb-1">
-            <span className="font-semibold">Records: </span>
-            {data.records}
-          </div>
-        )}
-        {data.keyCols !== undefined && (
-          <div className="text-xs mb-1">
-            <span className="font-semibold">Key Cols: </span>
-            {data.keyCols}
-          </div>
-        )}
-        {data.valueCols !== undefined && (
-          <div className="text-xs mb-1">
-            <span className="font-semibold">Value Cols: </span>
-            {data.valueCols}
+        {hasStats && (
+          <div className="flex gap-2 text-xs">
+            {data.records !== undefined && (
+              <div className="bg-purple-100 px-1.5 py-0.5 rounded">
+                <span className="font-medium">Records:</span> {data.records.toLocaleString()}
+              </div>
+            )}
+            {data.keyCols !== undefined && (
+              <div className="bg-purple-100 px-1.5 py-0.5 rounded">
+                <span className="font-medium">K:</span> {data.keyCols}
+              </div>
+            )}
+            {data.valueCols !== undefined && (
+              <div className="bg-purple-100 px-1.5 py-0.5 rounded">
+                <span className="font-medium">V:</span> {data.valueCols}
+              </div>
+            )}
           </div>
         )}
       </div>
