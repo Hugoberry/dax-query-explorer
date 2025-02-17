@@ -8,7 +8,7 @@ import {
   Controls,
   ReactFlowInstance,
   ReactFlowProvider,
-  // MiniMap,
+  MiniMap,
 } from '@xyflow/react';
 import { DatabaseSchemaNode } from '@/components/database-schema-node';
 import { ScaLogOpNode } from '@/components/sca-log-op-node';
@@ -286,9 +286,25 @@ function FlowView({ jsonContent }: { jsonContent: any }) {
   return (
     <ReactFlowProvider>
       <FlowContent data={grammarData} />
-      {/* <MiniMap  zoomable pannable/> */}
+      <MiniMap  zoomable pannable nodeColor={nodeColor}/>
     </ReactFlowProvider>
   );
 }
 
+function nodeColor(node: Node) {
+  switch (node.type) {
+    case 'scaLogOp':
+      return '#90CAF9';
+    case 'relLogOp':
+      return '#A5D6A7';
+    case 'spoolPhyOp':
+      return '#9f7aea';
+    case 'iterPhyOp':
+      return '#FFF59D';
+    case 'lookupPhyOp':
+      return '#FFCC80';
+    default:
+      return '#ddd';
+  }
+}
 export default FlowView;
