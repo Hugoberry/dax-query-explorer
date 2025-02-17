@@ -272,6 +272,7 @@ function FlowContent({ data }: { data: GrammarNodeData[] }) {
       >
         <Background />
         <Controls />
+        <MiniMap  zoomable pannable nodeColor={nodeColor} />
       </ReactFlow>
     </div>
   );
@@ -286,7 +287,6 @@ function FlowView({ jsonContent }: { jsonContent: any }) {
   return (
     <ReactFlowProvider>
       <FlowContent data={grammarData} />
-      <MiniMap  zoomable pannable nodeColor={nodeColor}/>
     </ReactFlowProvider>
   );
 }
