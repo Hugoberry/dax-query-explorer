@@ -40,8 +40,15 @@ export function ScaLogOpNode({ data, selected }: NodeProps<ScaLogOpNode>) {
           type="target"
           position={Position.Left}
         />
-        {label} #{data.rowNumber}
-        <span className="ml-1 px-1.5 py-0.5 bg-blue-200 rounded text-xs">ScaLogOp</span>
+        <div className="flex min-w-0 items-start p-1">
+          <span className="flex-shrink-0 bg-blue-200 px-1.5 py-0.5 rounded text-xs mr-2">
+          ScaLogOp
+          </span>
+          <div className="min-w-0 flex-1 px-1">
+            <div className="break-words">{label}</div>
+          </div>
+          <span className="flex-shrink-0 px-1.5">#{data.rowNumber}</span>
+        </div>
         <LabeledHandle
           id={`source-${label}`}
           title=""

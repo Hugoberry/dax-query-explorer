@@ -42,8 +42,15 @@ export function RelLogOpNode({ data, selected }: NodeProps<RelLogOpNode>) {
           type="target"
           position={Position.Left}
         />
-        {data.label} #{data.rowNumber}
-        <span className="ml-1 px-1.5 py-0.5 bg-green-200 rounded text-xs">RelLogOp</span>
+        <div className="flex min-w-0 items-start p-1">
+          <span className="flex-shrink-0 bg-green-200 px-1.5 py-0.5 rounded text-xs mr-2">
+          RelLogOp
+          </span>
+          <div className="min-w-0 flex-1 px-1">
+            <div className="break-words">{data.label}</div>
+          </div>
+          <span className="flex-shrink-0 px-1.5">#{data.rowNumber}</span>
+        </div>
         <LabeledHandle
           id={`source-${data.label}`}
           title=""
