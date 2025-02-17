@@ -98,21 +98,21 @@ const getOperatorLabel = (operator: any) => {
 
   if (operator.type === 'filterOp') {
     const table = cleanTableName(operator.columnRef.table);
-    return `${table}[${operator.columnRef.column}] ${operator.op} ${operator.filter}`;
+    return `${table} [${operator.columnRef.column}] ${operator.op} ${operator.filter}`;
   }
 
   if (operator.type === 'columnRef') {
     const table = cleanTableName(operator.table);
-    return `${table}[${operator.column}]`;
+    return `${table} [${operator.column}]`;
   }
 
   if (operator.type === 'complexIdentifier') {
     const paramStr = operator.param ? 
       (typeof operator.param === 'string' ? operator.param :
-       operator.param.type === 'complexIdentifier' ? `${operator.param.name}<${operator.param.param || ''}>` :
-       operator.param.table ? `${operator.param.table}[${operator.param.column}]` : '') 
+       operator.param.type === 'complexIdentifier' ? `${operator.param.name} <${operator.param.param || ''}>` :
+       operator.param.table ? `${operator.param.table} [${operator.param.column}]` : '') 
       : '';
-    return `${operator.name}<${paramStr}>`;
+    return `${operator.name} <${paramStr}>`;
   }
 
   return operator.name || '';
