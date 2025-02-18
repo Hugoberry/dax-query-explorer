@@ -9,6 +9,11 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { ChevronDown, ChevronRight } from 'lucide-react';
 
 interface ColumnRef {
@@ -67,7 +72,26 @@ export function IterPhyOpNode({ data, selected }: NodeProps<IterPhyOpNode>) {
         />
         <div className="flex min-w-0 items-start p-1">
           <span className="flex-shrink-0 bg-yellow-200 px-1.5 py-0.5 rounded text-xs mr-2">
-            IterPhyOp
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <span className="inline-flex items-center gap-1 cursor-help">
+                  IterPhyOp
+                </span>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80 text-left">
+                <div className="space-y-2">
+                  <h4 className="font-bold text-lg">Iterator Physical Operator</h4>
+                  <p className="text-sm">
+                    Processes rows one at a time (or in batches) and returns a sequence of rows. 
+                    An iterator can function in various modes, including as a pure iterator or as 
+                    a table-valued function that produces multiple rows per input row.
+                  </p>
+                  <div className="text-xs text-muted-foreground">
+                    Example: An operator that iterates over a set of rows to apply row-level calculations.
+                  </div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           </span>
           <div className="min-w-0 flex-1 px-1">
             <div className="break-words">{label}</div>

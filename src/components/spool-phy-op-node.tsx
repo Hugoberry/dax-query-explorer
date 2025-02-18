@@ -1,6 +1,11 @@
 import { Node, NodeProps, Position } from '@xyflow/react';
 import { BaseNode } from '@/components/base-node';
 import { BaseHandle } from '@/components/base-handle';
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 type SpoolPhyOpNode = Node<{
   label: string | { type: string; name: string; param: any };
@@ -33,7 +38,26 @@ export function SpoolPhyOpNode({ data, selected }: NodeProps<SpoolPhyOpNode>) {
         />
         <div className="flex min-w-0 items-start p-1">
           <span className="flex-shrink-0 bg-purple-200 px-1.5 py-0.5 rounded text-xs mr-2">
-            SpoolPhyOp
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <span className="inline-flex items-center gap-1 cursor-help">
+                  SpoolPhyOp
+                </span>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80 text-left">
+                <div className="space-y-2">
+                  <h4 className="font-bold text-lg">Spool Physical Operator</h4>
+                  <p className="text-sm">
+                    Materializes intermediate results in memory by executing its entire subtree before proceeding. 
+                    Spool operators are used to cache or buffer data, often indicated by properties like #Records, 
+                    #KeyCols, and #ValueCols.
+                  </p>
+                  <div className="text-xs text-muted-foreground">
+                    Example: A spool that stores intermediate query results to optimize further processing or to handle repeated references.
+                  </div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           </span>
           <div className="min-w-0 flex-1 px-1">
             <div className="break-words">{label}</div>

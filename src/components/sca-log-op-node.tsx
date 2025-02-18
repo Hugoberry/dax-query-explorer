@@ -9,6 +9,11 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { ChevronDown, ChevronRight } from 'lucide-react';
 
 interface ColumnRef {
@@ -53,7 +58,26 @@ export function ScaLogOpNode({ data, selected }: NodeProps<ScaLogOpNode>) {
         />
         <div className="flex min-w-0 items-start p-1">
           <span className="flex-shrink-0 bg-blue-200 px-1.5 py-0.5 rounded text-xs mr-2">
-            ScaLogOp
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <span className="inline-flex items-center gap-1 cursor-help">
+                  ScaLogOp
+                </span>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80 text-left">
+                <div className="space-y-2">
+                  <h4 className="font-bold text-lg">Scalar Logical Operator</h4>
+                  <p className="text-sm">
+                    Produces a single scalar value (such as a number, string, or Boolean). 
+                    These operators are responsible for evaluating expressions that yield 
+                    a single value.
+                  </p>
+                  <div className="text-xs text-muted-foreground">
+                    Example: An operator that calculates an aggregated measure like a SUM.
+                  </div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           </span>
           <div className="min-w-0 flex-1 px-1">
             <div className="break-words">{label}</div>

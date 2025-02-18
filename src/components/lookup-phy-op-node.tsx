@@ -9,7 +9,12 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { ChevronDown, ChevronRight} from 'lucide-react';
 
 interface ColumnRef {
   table: string;
@@ -62,7 +67,25 @@ export function LookupPhyOpNode({ data, selected }: NodeProps<LookupPhyOpNode>) 
         />
         <div className="flex min-w-0 items-start p-1">
           <span className="flex-shrink-0 bg-orange-200 px-1.5 py-0.5 rounded text-xs mr-2">
-            LookupPhyOp
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <span className="inline-flex items-center gap-1 cursor-help">
+                  LookupPhyOp
+                </span>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80 text-left">
+                <div className="space-y-2">
+                  <h4 className="font-bold text-lg">Lookup Physical Operator</h4>
+                  <p className="text-sm">
+                    Given a current row as input, this operator computes and returns a scalar value. 
+                    It is often used to resolve expressions that require fetching data from another context.
+                  </p>
+                  <div className="text-xs text-muted-foreground">
+                    Example: A lookup that retrieves a single value based on a key from an iterator's output.
+                  </div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           </span>
           <div className="min-w-0 flex-1 px-1">
             <div className="break-words">{label}</div>

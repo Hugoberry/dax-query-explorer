@@ -9,6 +9,11 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { ChevronDown, ChevronRight } from 'lucide-react';
 
 interface ColumnRef {
@@ -54,7 +59,25 @@ export function RelLogOpNode({ data, selected }: NodeProps<RelLogOpNode>) {
         />
         <div className="flex min-w-0 items-start p-1">
           <span className="flex-shrink-0 bg-green-200 px-1.5 py-0.5 rounded text-xs mr-2">
-            RelLogOp
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <span className="inline-flex items-center gap-1 cursor-help">
+                  RelLogOp
+                </span>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80 text-left">
+                <div className="space-y-2">
+                  <h4 className="font-bold text-lg">Relational Logical Operator</h4>
+                  <p className="text-sm">
+                    Produces a table (a set of rows and columns). These operators are involved 
+                    in operations that manipulate or filter tabular data.
+                  </p>
+                  <div className="text-xs text-muted-foreground">
+                    Example: A table scan that outputs a subset of columns or rows from a larger table.
+                  </div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           </span>
           <div className="min-w-0 flex-1 px-1">
             <div className="break-words">{data.label}</div>
