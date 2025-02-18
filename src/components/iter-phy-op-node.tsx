@@ -83,7 +83,7 @@ export function IterPhyOpNode({ data, selected }: NodeProps<IterPhyOpNode>) {
       </h2>
       <div className="p-2">
         {data.logOp && (
-          <div className="text-md mb-1 font-bold text-center">
+          <div className="text-lg mb-1 font-bold text-center">
             {data.logOp}
           </div>
         )}

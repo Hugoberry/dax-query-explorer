@@ -33,6 +33,7 @@ type LookupPhyOpNode = Node<{
   dataType?: string;
   dominantValue?: string;
   lookupCols?: LookupCols;
+  numericLiteral?: string;
 }>;
 
 export function LookupPhyOpNode({ data, selected }: NodeProps<LookupPhyOpNode>) {
@@ -77,7 +78,7 @@ export function LookupPhyOpNode({ data, selected }: NodeProps<LookupPhyOpNode>) 
       </h2>
       <div className="p-2">
         {data.logOp && (
-          <div className="text-md mb-2 font-bold text-center">
+          <div className="text-lg mb-2 font-bold text-center">
             {data.logOp}
           </div>
         )}
@@ -114,6 +115,11 @@ export function LookupPhyOpNode({ data, selected }: NodeProps<LookupPhyOpNode>) 
           {data.dominantValue && (
             <div className="bg-orange-200 px-1.5 py-0.5 rounded text-xs">
               {data.dominantValue}
+            </div>
+          )}
+          {data.numericLiteral && (
+            <div className="bg-orange-200 px-1.5 py-0.5 rounded text-xs">
+              {data.numericLiteral}
             </div>
           )}
         </div>

@@ -173,6 +173,7 @@ const generateNodesAndEdges = (data: GrammarNodeData[]) => {
           dataType: item.attributes.find(attr => attr.dataType)?.dataType,
           dominantValue: item.attributes.find(attr => attr.type === 'DominantValue')?.value,
           lookupCols: item.attributes.find(attr => attr.type === 'LookupCols'),
+          numericLiteral: item.attributes.find(attr => attr.type === 'NumericLiteral')?.value,
         };
         break;
 
