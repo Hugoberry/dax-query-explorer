@@ -7,8 +7,8 @@ import React, {
   useEffect,
   memo,
 } from 'react';
-import { useParams } from 'react-router-dom';
-import { CodeOnlyIcon, SplitViewIcon } from './icons';
+import { useParams, Link } from 'react-router-dom';
+import { CodeOnlyIcon, SplitViewIcon, GithubIcon } from './icons';
 import CodeMirror, {
   EditorView,
   keymap,
@@ -23,6 +23,7 @@ import grammar from '@/lib/grammar';
 import nearley from 'nearley';
 import { FEEDBACK_URL } from './const';
 import { getQueryPlan } from '@/lib/supabase';
+import { FileJson, FileText } from 'lucide-react';
 
 interface CodeEditorProps {
   initialContent: string;
@@ -261,15 +262,28 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   return (
     <div className="w-full" id="editor">
       <div id="topMenu">
-        <div className="menu-group">
+      <div className="menu-group flex">
           <span
-            className="menu-item"
-            id="menu-issues"
+            className="menu-item flex items-center justify-center"
             title={`Feature Request, Bug Report, Feedback: ${FEEDBACK_URL}`}
             onClick={() => window.open(FEEDBACK_URL, '_blank')}
           >
-            ?
+            <GithubIcon />
           </span>
+          <Link
+            to="/plan/jsoninput"
+            className="menu-item flex items-center justify-center"
+            title="View JSON input example"
+          >
+            <FileJson className="w-5 h-5 stroke-slate-50" />
+          </Link>
+          <Link
+            to="/plan/textinput"
+            className="menu-item flex items-center justify-center"
+            title="View text input example"
+          >
+            <FileText className="w-5 h-5 stroke-slate-50" />
+          </Link>
         </div>
       </div>
       <CodeMirror
