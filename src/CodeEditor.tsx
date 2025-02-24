@@ -7,8 +7,8 @@ import React, {
   useEffect,
   memo,
 } from 'react';
-import { useParams } from 'react-router-dom';
-import { CodeOnlyIcon, SplitViewIcon } from './icons';
+import { useParams, Link } from 'react-router-dom';
+import { CodeOnlyIcon, SplitViewIcon, GithubIcon } from './icons';
 import CodeMirror, {
   EditorView,
   keymap,
@@ -23,6 +23,7 @@ import grammar from '@/lib/grammar';
 import nearley from 'nearley';
 import { FEEDBACK_URL } from './const';
 import { getQueryPlan } from '@/lib/supabase';
+import { FileJson, FileText } from 'lucide-react';
 
 interface CodeEditorProps {
   initialContent: string;
@@ -41,10 +42,6 @@ interface StatusBarProps {
   selection: number;
 }
 
-interface TopMenuProps {
-  onParse: () => void;
-}
-
 interface QueryPlanRow {
   IndentedOperation: string;
 }
@@ -54,34 +51,7 @@ interface QueryPlan {
   LogicalQueryPlanRows: QueryPlanRow[];
 }
 
-// TopMenu component
-const TopMenu = memo<TopMenuProps>(({ onParse }) => {
-  return (
-    <div id="topMenu">
-      <div className="menu-group">
-        <span
-          className="menu-item"
-          id="menu-parse"
-          title="Parse DAX Query Plan"
-          onClick={onParse}
-        >
-          Parse Query Plan
-        </span>
-        <span
-          className="menu-item"
-          id="menu-issues"
-          title={`Feature Request, Bug Report, Feedback: ${FEEDBACK_URL}`}
-          onClick={() => window.open(FEEDBACK_URL, '_blank')}
-        >
-          ?
-        </span>
-      </div>
-    </div>
-  );
-});
-
-TopMenu.displayName = 'TopMenu';
-
+// StatusBar component
 const StatusBar = memo<StatusBarProps>((props) => {
   const { showSplitView, setShowSplitView, position, selection } = props;
   return (
@@ -171,7 +141,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
           }
         } catch (error) {
           console.error('Error loading shared plan:', error);
-          // You might want to show an error message to the user here
         }
       };
       loadSharedPlan();
@@ -206,7 +175,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     setSelection(selectionSize);
   }, []);
 
-  const handleParse = useCallback(() => {
+  const parseContent = useCallback((contentToParse: string) => {
     if (!parserRef.current) {
       console.error('Parser not initialized');
       return;
@@ -218,23 +187,21 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         nearley.Grammar.fromCompiled(grammar as nearley.CompiledRules)
       );
 
-      if (!content) {
+      if (!contentToParse) {
         console.error('No content to parse');
         return;
       }
 
       // Check if content is JSON
-      let contentToParse = content;
-      if (isJsonString(content)) {
-        const jsonData = JSON.parse(content) as QueryPlan;
-        contentToParse = extractOperationsFromJson(jsonData);
+      let finalContent = contentToParse;
+      if (isJsonString(contentToParse)) {
+        const jsonData = JSON.parse(contentToParse) as QueryPlan;
+        finalContent = extractOperationsFromJson(jsonData);
       }
 
-      const contentWithNewline = contentToParse + '\n';
-      console.log('Parsing content:', contentWithNewline);
+      const contentWithNewline = finalContent + '\n';
       newParser.feed(contentWithNewline);
       const results = newParser.results[0];
-      console.log('Parse results:', results);
 
       if (onParseResult) {
         onParseResult(results);
@@ -242,7 +209,22 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     } catch (err) {
       console.error('Parse error:', err);
     }
-  }, [content, onParseResult]);
+  }, [onParseResult]);
+
+  // Debounce function to limit parse operations
+  const debounce = (func: Function, wait: number) => {
+    let timeout: NodeJS.Timeout;
+    return (...args: any[]) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
+  };
+
+  // Create debounced parse function
+  const debouncedParse = useCallback(
+    debounce((content: string) => parseContent(content), 500),
+    [parseContent]
+  );
 
   const handleChange = useCallback((value: string) => {
     setContent(value);
@@ -252,7 +234,15 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     if (onContentChange) {
       onContentChange(value);
     }
-  }, [onChange, onContentChange]);
+    debouncedParse(value);
+  }, [onChange, onContentChange, debouncedParse]);
+
+  // Parse initial content
+  useEffect(() => {
+    if (initialContent) {
+      parseContent(initialContent);
+    }
+  }, [initialContent, parseContent]);
 
   // Initialize CodeMirror extensions
   const extensions = useRef([
@@ -271,7 +261,31 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 
   return (
     <div className="w-full" id="editor">
-      <TopMenu onParse={handleParse} />
+      <div id="topMenu">
+      <div className="menu-group flex">
+          <span
+            className="menu-item flex items-center justify-center"
+            title={`Feature Request, Bug Report, Feedback: ${FEEDBACK_URL}`}
+            onClick={() => window.open(FEEDBACK_URL, '_blank')}
+          >
+            <GithubIcon />
+          </span>
+          <Link
+            to="/plan/jsoninput"
+            className="menu-item flex items-center justify-center"
+            title="View JSON input example"
+          >
+            <FileJson className="w-5 h-5 stroke-slate-50" />
+          </Link>
+          <Link
+            to="/plan/textinput"
+            className="menu-item flex items-center justify-center"
+            title="View text input example"
+          >
+            <FileText className="w-5 h-5 stroke-slate-50" />
+          </Link>
+        </div>
+      </div>
       <CodeMirror
         ref={editorRef}
         value={content}
