@@ -120,30 +120,67 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const editorRef = useRef<ReactCodeMirrorRef>(null);
   const parserRef = useRef<nearley.Parser | null>(null);
   const { shortCode } = useParams<{ shortCode: string }>();
+  const lastShortCode = useRef<string | undefined>(shortCode);
+  const initialContentRef = useRef(initialContent);
+  const contentLoadedRef = useRef(false);
+  const initialParseCompleted = useRef(false);
+
+  // Update content when initialContent changes (e.g., when navigating between routes)
+  useEffect(() => {
+    if (initialContent !== content && !contentLoadedRef.current) {
+      setContent(initialContent);
+      initialContentRef.current = initialContent;
+      
+      // Parse the new content
+      if (initialContent) {
+        parseContent(initialContent);
+      }
+    }
+  }, [initialContent, content]);
 
   // Load shared query plan if shortCode is present
   useEffect(() => {
     if (shortCode) {
+      // Reset the content loaded flag when shortCode changes
+      if (shortCode !== lastShortCode.current) {
+        contentLoadedRef.current = false;
+        initialParseCompleted.current = false;
+      }
+      
+      lastShortCode.current = shortCode;
+      
       const loadSharedPlan = async () => {
         try {
           const queryPlan = await getQueryPlan(shortCode);
+          
           if (typeof queryPlan === 'string') {
             setContent(queryPlan);
             if (onContentChange) {
               onContentChange(queryPlan);
             }
+            // Parse the loaded content immediately
+            parseContent(queryPlan);
           } else {
             const stringifiedPlan = JSON.stringify(queryPlan, null, 2);
             setContent(stringifiedPlan);
             if (onContentChange) {
               onContentChange(stringifiedPlan);
             }
+            // Parse the loaded content immediately
+            parseContent(stringifiedPlan);
           }
+          
+          // Mark content as loaded
+          contentLoadedRef.current = true;
         } catch (error) {
           console.error('Error loading shared plan:', error);
         }
       };
+      
       loadSharedPlan();
+    } else {
+      // When returning to root, reset the content loaded flag
+      contentLoadedRef.current = false;
     }
   }, [shortCode, onContentChange]);
 
@@ -203,8 +240,9 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       newParser.feed(contentWithNewline);
       const results = newParser.results[0];
 
-      if (onParseResult) {
+      if (onParseResult && results) {
         onParseResult(results);
+        initialParseCompleted.current = true;
       }
     } catch (err) {
       console.error('Parse error:', err);
@@ -237,12 +275,13 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     debouncedParse(value);
   }, [onChange, onContentChange, debouncedParse]);
 
-  // Parse initial content
+  // Parse initial content only once when component mounts
   useEffect(() => {
-    if (initialContent) {
-      parseContent(initialContent);
+    if (initialContentRef.current && !initialParseCompleted.current) {
+      parseContent(initialContentRef.current);
+      initialParseCompleted.current = true;
     }
-  }, [initialContent, parseContent]);
+  }, []); // Empty dependency array ensures this runs only once
 
   // Initialize CodeMirror extensions
   const extensions = useRef([

@@ -1,11 +1,13 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
 import CodeEditor from "./CodeEditor";
 import ResizableSplitView from "./ResizableSplitView";
 import FlowView from "./FlowView";
 import "@xyflow/react/dist/style.css";
 import { ShareButton } from "./components/share-button";
+import nearley from 'nearley';
+import grammar from '@/lib/grammar';
 
 const INITIAL_DAX_PLAN = `AddColumns: IterPhyOp LogOp=SelectColumns IterCols(0, 1)(''[Color], ''[])
     Spool_Iterator<SpoolIterator>: IterPhyOp LogOp=Scan_Vertipaq IterCols(0)('Product'[Color]) #Records=16 #KeyCols=107 #ValueCols=0
@@ -66,9 +68,17 @@ function SharedPlanView() {
   const [grammarData, setGrammarData] = useState<any[]>([]);
   const [showSplitView, setShowSplitView] = useState<boolean>(true);
   const [currentQueryPlan, setCurrentQueryPlan] = useState<string>('');
+  const location = useLocation();
+
+  // Reset grammar data when location changes
+  useEffect(() => {
+    setGrammarData([]);
+  }, [location.pathname]);
 
   const handleParseResult = (result: any) => {
-    setGrammarData(result);
+    if (result) {
+      setGrammarData(result);
+    }
   };
 
   return (
@@ -87,31 +97,66 @@ function App() {
   const [grammarData, setGrammarData] = useState<any[]>([]);
   const [showSplitView, setShowSplitView] = useState<boolean>(true);
   const [currentQueryPlan, setCurrentQueryPlan] = useState<string>(INITIAL_DAX_PLAN);
+  const location = useLocation();
+
+  // Reset grammar data when location changes
+  useEffect(() => {
+    setGrammarData([]);
+  }, [location.pathname]);
 
   const handleParseResult = (result: any) => {
-    setGrammarData(result);
+    if (result) {
+      setGrammarData(result);
+    }
   };
 
+  // Parse initial content on mount
+  useEffect(() => {
+    if (location.pathname === '/' && grammarData.length === 0) {
+      // Create a temporary parser to parse the initial content
+      try {
+        const parser = new nearley.Parser(
+          nearley.Grammar.fromCompiled(grammar as any)
+        );
+        
+        parser.feed(INITIAL_DAX_PLAN + '\n');
+        const results = parser.results[0];
+        
+        if (results) {
+          setGrammarData(results);
+        }
+      } catch (err) {
+        console.error('Error parsing initial content:', err);
+      }
+    }
+  }, [location.pathname, grammarData.length]);
+
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <FullView
+            grammarData={grammarData}
+            showSplitView={showSplitView}
+            setShowSplitView={setShowSplitView}
+            onParseResult={handleParseResult}
+            currentQueryPlan={currentQueryPlan}
+            onContentChange={setCurrentQueryPlan}
+          />
+        }
+      />
+      <Route path="/plan/:shortCode" element={<SharedPlanView />} />
+    </Routes>
+  );
+}
+
+function AppWithRouter() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <FullView
-              grammarData={grammarData}
-              showSplitView={showSplitView}
-              setShowSplitView={setShowSplitView}
-              onParseResult={handleParseResult}
-              currentQueryPlan={currentQueryPlan}
-              onContentChange={setCurrentQueryPlan}
-            />
-          }
-        />
-        <Route path="/plan/:shortCode" element={<SharedPlanView />} />
-      </Routes>
+      <App />
     </BrowserRouter>
   );
 }
 
-export default App;
+export default AppWithRouter;

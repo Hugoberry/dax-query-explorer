@@ -9,6 +9,7 @@ import {
   ReactFlowInstance,
   ReactFlowProvider,
   MiniMap,
+  OnInit,
 } from '@xyflow/react';
 import { DatabaseSchemaNode } from '@/components/database-schema-node';
 import { ScaLogOpNode } from '@/components/sca-log-op-node';
@@ -44,6 +45,11 @@ const getLayoutedElements = (
 
   return {
     nodes: nodes.map((node) => {
+      // If the node has a user-defined position, keep it
+      if (node.position.x !== 0 && node.position.y !== 0) {
+        return node;
+      }
+      
       const nodeWithPosition = g.node(node.id);
       return {
         ...node,
@@ -231,32 +237,49 @@ const generateNodesAndEdges = (data: GrammarNodeData[]) => {
 };
 
 function FlowContent({ data }: { data: GrammarNodeData[] }) {
-  const initialElements = useMemo(() => {
-    const { nodes: generatedNodes, edges: generatedEdges } = generateNodesAndEdges(data);
-    return getLayoutedElements(generatedNodes, generatedEdges, { direction: 'LR' });
-  }, [data]);
-
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialElements.nodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialElements.edges);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const reactFlowInstance = useRef<ReactFlowInstance | null>(null);
+  const dataRef = useRef<GrammarNodeData[]>([]);
+  const hasRenderedRef = useRef(false);
 
-  const onInit = useCallback((instance: ReactFlowInstance) => {
+  const onInit: OnInit<Node, Edge> = useCallback((instance) => {
     reactFlowInstance.current = instance;
     setTimeout(() => {
       instance.fitView({ duration: 200 });
     }, 100);
   }, []);
 
+  // Update the flow whenever data changes
   useEffect(() => {
-    if (data.length > 0) {
+    // Always render if we have data and haven't rendered yet
+    const shouldRender = data.length > 0 && (!hasRenderedRef.current || 
+      // Or if data has changed
+      data.length !== dataRef.current.length || 
+      JSON.stringify(data) !== JSON.stringify(dataRef.current));
+    
+    if (shouldRender) {
+      console.log('Rendering flow with data:', data.length);
+      // Update the reference to the current data
+      dataRef.current = [...data];
+      hasRenderedRef.current = true;
+      
       const { nodes: newNodes, edges: newEdges } = generateNodesAndEdges(data);
       const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
         newNodes, 
         newEdges, 
         { direction: 'LR' }
       );
-      setNodes(layoutedNodes);
-      setEdges(layoutedEdges);
+      
+      setNodes(layoutedNodes as any);
+      setEdges(layoutedEdges as any);
+      
+      // Fit view after layout
+      setTimeout(() => {
+        if (reactFlowInstance.current) {
+          reactFlowInstance.current.fitView({ duration: 200 });
+        }
+      }, 100);
     }
   }, [data, setNodes, setEdges]);
 
@@ -273,7 +296,7 @@ function FlowContent({ data }: { data: GrammarNodeData[] }) {
       >
         <Background />
         <Controls />
-        <MiniMap  zoomable pannable nodeColor={nodeColor} />
+        <MiniMap zoomable pannable nodeColor={nodeColor} />
       </ReactFlow>
     </div>
   );
@@ -308,4 +331,5 @@ function nodeColor(node: Node) {
       return '#ddd';
   }
 }
+
 export default FlowView;
