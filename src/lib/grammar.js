@@ -6,6 +6,7 @@ import moo from 'moo';
 const lexer = moo.compile({
     ws:         /[ \t]+/,
     opType:     /RelLogOp|ScaLogOp|IterPhyOp|LookupPhyOp|SpoolPhyOp/,
+    operatorText: {match: /[^\n:]+(?=:)/, lineBreaks: false},
     colon:      /:/,
     lineRange:  /\d+-\d+/,
     float:      /\d*\.\d+/,
@@ -32,36 +33,18 @@ let ParserRules = [
     {"name": "main$ebnf$1", "symbols": ["line"]},
     {"name": "main$ebnf$1", "symbols": ["main$ebnf$1", "line"], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "main", "symbols": ["_", "main$ebnf$1", "_"], "postprocess": function(d) { return d[1]; }},
-    {"name": "line", "symbols": ["indent", "operator", "_", (lexer.has("opType") ? {type: "opType"} : opType), "_", "attributes", "nl"], "postprocess": function(d,l) { return { indent: d[0].length,line:d[3].line, operator: d[1], type: d[3].value, attributes: d[5] }; }},
+    {"name": "line", "symbols": ["indent", (lexer.has("operatorText") ? {type: "operatorText"} : operatorText), (lexer.has("colon") ? {type: "colon"} : colon), "_", (lexer.has("opType") ? {type: "opType"} : opType), "_", "attributes", "nl"], "postprocess":  function(d,l) { 
+            return { 
+                indent: d[0].length, 
+                line: d[4].line, 
+                operator: d[1].value.trim(), 
+                type: d[4].value, 
+                attributes: d[6] 
+            }; 
+        } },
     {"name": "indent$ebnf$1", "symbols": []},
     {"name": "indent$ebnf$1", "symbols": ["indent$ebnf$1", (lexer.has("ws") ? {type: "ws"} : ws)], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "indent", "symbols": ["indent$ebnf$1"], "postprocess": function(d) { return d[0] ? d[0].map(w => w.value).join('') : ''; }},
-    {"name": "operator$subexpression$1", "symbols": ["filterOp"]},
-    {"name": "operator$subexpression$1", "symbols": ["complexIdentifier"]},
-    {"name": "operator$subexpression$1", "symbols": ["text"]},
-    {"name": "operator$subexpression$1", "symbols": ["identifier"]},
-    {"name": "operator$subexpression$1", "symbols": ["columnRef"]},
-    {"name": "operator", "symbols": ["operator$subexpression$1", "colon"], "postprocess":  function(d) { 
-            const op = d[0][0];
-            if (op.type === 'filterOp') {
-                return op;
-            }
-            if (op.table && op.column) {
-                return { type: 'columnRef', table: op.table, column: op.column };
-            }
-            if (op.type === 'complexIdentifier') {
-                return op;
-            }
-            return op.value; 
-        } },
-    {"name": "filterOp", "symbols": ["columnRef", "_", "equals", "_", "value"], "postprocess":  function(d) {
-            return { 
-                type: 'filterOp',
-                columnRef: d[0],
-                op: d[2].value,
-        		filter: d[4][0].value,
-            };
-        } },
     {"name": "complexIdentifier", "symbols": ["identifier", (lexer.has("langle") ? {type: "langle"} : langle), "typeParam", (lexer.has("rangle") ? {type: "rangle"} : rangle)], "postprocess":  function(d) {
             return { 
                 type: 'complexIdentifier',
