@@ -5,6 +5,7 @@ import moo from 'moo';
 const lexer = moo.compile({
     ws:         /[ \t]+/,
     opType:     /RelLogOp|ScaLogOp|IterPhyOp|LookupPhyOp|SpoolPhyOp/,
+    operatorText: {match: /[^\n:]+(?=:)/, lineBreaks: false},
     colon:      /:/,
     lineRange:  /\d+-\d+/,
     float:      /\d*\.\d+/,
@@ -31,32 +32,17 @@ const lexer = moo.compile({
 @lexer lexer
 
 main -> _ line:+ _ {% function(d) { return d[1]; } %}
-line -> indent operator _ %opType _ attributes nl {% function(d,l) { return { indent: d[0].length,line:d[3].line, operator: d[1], type: d[3].value, attributes: d[5] }; } %}
+line -> indent %operatorText %colon _ %opType _ attributes nl {% function(d,l) { 
+    return { 
+        indent: d[0].length, 
+        line: d[4].line, 
+        operator: d[1].value.trim(), 
+        type: d[4].value, 
+        attributes: d[6] 
+    }; 
+} %}
 
 indent -> %ws:* {% function(d) { return d[0] ? d[0].map(w => w.value).join('') : ''; } %}
-
-operator -> (filterOp | complexIdentifier | text | identifier | columnRef ) colon {% function(d) { 
-    const op = d[0][0];
-    if (op.type === 'filterOp') {
-        return op;
-    }
-    if (op.table && op.column) {
-        return { type: 'columnRef', table: op.table, column: op.column };
-    }
-    if (op.type === 'complexIdentifier') {
-        return op;
-    }
-    return op.value; 
-} %}
-
-filterOp -> columnRef _ equals _ value {% function(d) {
-    return { 
-        type: 'filterOp',
-        columnRef: d[0],
-        op: d[2].value,
-		filter: d[4][0].value,
-    };
-} %}
 
 complexIdentifier -> identifier %langle typeParam %rangle {% function(d) {
     return { 
