@@ -44,6 +44,25 @@ export function ScaLogOpNode({ data, selected }: NodeProps<ScaLogOpNode>) {
 
   const hasTags = data.dataType || data.dominantValue;
 
+  // Format the label to handle different display cases
+  const formatLabel = (labelText: string) => {
+    // Check if the label contains brackets
+    if (labelText.includes('[')) {
+      // Split by opening bracket
+      const parts = labelText.split('[');
+      const tableName = parts[0];
+      const columnPart = '[' + parts[1]; // Keep the brackets with the column
+      
+      return (
+        <>
+          <span className="whitespace-nowrap">{tableName}</span>
+          <span className="whitespace-nowrap">{columnPart}</span>
+        </>
+      );
+    }
+    return labelText;
+  };
+
   return (
     <BaseNode 
       className="p-0 bg-blue-50" 
@@ -79,8 +98,8 @@ export function ScaLogOpNode({ data, selected }: NodeProps<ScaLogOpNode>) {
               </HoverCardContent>
             </HoverCard>
           </span>
-          <div className="min-w-0 flex-1 px-1">
-            <div className="break-words">{label}</div>
+          <div className="min-w-0 flex-1 px-1 flex flex-wrap">
+            {formatLabel(label)}
           </div>
           <span className="flex-shrink-0 px-1.5">#{data.rowNumber}</span>
         </div>
